@@ -32,9 +32,7 @@ export async function POST(req: Request) {
     const user = await prisma.user.findUnique({ where: { email: session.user.email } });
     if (!user) return new NextResponse('User not found', { status: 404 });
 
-    const Slug = name.toLowerCase().replace(/\s+/g, '-') + '-' + nanoid(10);
-
-    console.log('Creating person with name:', name, 'and slug:', Slug);
+    const Slug = name.toLowerCase().replace(/\s+/g, '_') + '-' + nanoid(10);
 
     const person = await prisma.person.create({
         data: {
@@ -60,7 +58,6 @@ export async function DELETE(req: Request) {
     const user = await prisma.user.findUnique({ where: { email: session.user.email } });
     if (!user) return new NextResponse('User not found', { status: 404 });
 
-    // Find the person and make sure it belongs to the current user
     const person = await prisma.person.findFirst({
         where: {
             slug: slug,
@@ -70,12 +67,10 @@ export async function DELETE(req: Request) {
 
     if (!person) return new NextResponse('Person not found or unauthorized', { status: 404 });
 
-    // Delete all messages associated with the person first
     await prisma.message.deleteMany({
         where: { personId: person.id }
     });
 
-    // Then delete the person
     await prisma.person.delete({
         where: { id: person.id }
     });

@@ -2,11 +2,6 @@ import { prisma } from '@/lib/prisma';
 import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-interface Props {
-    params: { slug: string };
-    searchParams?: { success?: string };
-}
-
 async function submitMessage(formData: FormData) {
     'use server';
 
@@ -14,7 +9,6 @@ async function submitMessage(formData: FormData) {
     const content = formData.get('content') as string;
     const emoji = formData.get('emoji') as string;
 
-    // Save the message to database (you'll need to implement this)
     await prisma.message.create({
         data: {
             content,
@@ -27,18 +21,21 @@ async function submitMessage(formData: FormData) {
     redirect(`/share/${slug}?success=true`);
 }
 
-export default async function SharePage({ params, searchParams }: Props) {
-    const resolvedParams = await params;
-    const resolvedSearchParams = await searchParams;
-
+export default async function SharePage({
+    params,
+    searchParams,
+}: {
+    params: { slug: string };
+    searchParams?: { success?: string };
+}) {
     const person = await prisma.person.findUnique({
-        where: { slug: resolvedParams.slug },
+        where: { slug: params.slug },
         include: { user: true },
     });
 
     if (!person) return notFound();
 
-    const success = resolvedSearchParams?.success === 'true';
+    const success = searchParams?.success === 'true';
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-6">
