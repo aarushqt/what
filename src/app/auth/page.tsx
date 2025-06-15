@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Auth() {
-    const { data: session, status } = useSession();
+function AuthContent() {
     const searchParams = useSearchParams();
     const mode = searchParams.get('mode');
     const [isSignIn, setIsSignIn] = useState(mode !== 'signup');
+    const { data: session, status } = useSession();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -30,7 +30,6 @@ export default function Auth() {
         }
     }, [session, router]);
 
-    // Effect to handle mode changes from URL
     useEffect(() => {
         setIsSignIn(mode !== 'signup');
     }, [mode]);
@@ -61,7 +60,6 @@ export default function Auth() {
         setError('');
         setSuccess('');
 
-        // Check if passwords match
         if (formData.password !== formData.confirmPassword) {
             setError("Passwords don't match");
             return;
@@ -127,7 +125,7 @@ export default function Auth() {
     const PasswordResetInfoBox = () => (
         <div className="mt-8 p-3 bg-blue-50 border border-blue-200 flex items-start">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_354_3517)">
+                <g clipPath="url(#clip0_354_3517)">
                     <path d="M22 9V7H21V5H20V4H19V3H17V2H15V1H9V2H7V3H5V4H4V5H3V7H2V9H1V15H2V17H3V19H4V20H5V21H7V22H9V23H15V22H17V21H19V20H20V19H21V17H22V15H23V9H22ZM11 6H13V8H11V6ZM10 15H11V10H10V9H13V15H14V17H10V15Z" fill="#2B7FFF" />
                 </g>
                 <defs>
@@ -144,7 +142,6 @@ export default function Auth() {
 
     return (
         <>
-            {/* Custom Nav Bar */}
             <nav className="bg-white border-b-2">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-24">
@@ -160,7 +157,6 @@ export default function Auth() {
                             </Link>
                         </div>
 
-                        {/* Desktop navigation */}
                         <div className="hidden sm:flex items-center">
                             <Link
                                 href="/"
@@ -208,9 +204,9 @@ export default function Auth() {
             </nav >
 
             <main className="flex justify-center items-start">
-                <div className="w-1/5 max-w-md bg-white mt-28">
+                <div className="w-full px-4 sm:px-6 md:w-3/4 lg:w-1/2 xl:w-2/5 max-w-md mx-auto bg-white mt-8 sm:mt-28">
                     <div className="mb-6">
-                        <h1 className="text-6xl font-bold text-red-400 text-center font-playfair">
+                        <h1 className="text-4xl sm:text-6xl font-bold text-red-400 text-center font-playfair">
                             {isSignIn ? 'Sign In' : 'Sign Up'}
                         </h1>
                     </div>
@@ -268,7 +264,6 @@ export default function Auth() {
                                 </button>
                             </form>
 
-                            {/* Password reset info box */}
                             <PasswordResetInfoBox />
                         </>
                     ) : (
@@ -340,7 +335,6 @@ export default function Auth() {
                                 </button>
                             </form>
 
-                            {/* Password reset info box in sign up section */}
                             <PasswordResetInfoBox />
                         </>
                     )}
@@ -356,5 +350,17 @@ export default function Auth() {
                 </div>
             </main>
         </>
+    );
+}
+
+function AuthLoading() {
+    return <div className="min-h-screen flex items-center justify-center">Loading auth page...</div>;
+}
+
+export default function Auth() {
+    return (
+        <Suspense fallback={<AuthLoading />}>
+            <AuthContent />
+        </Suspense>
     );
 }
