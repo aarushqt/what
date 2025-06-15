@@ -21,21 +21,33 @@ interface User {
 }
 
 export default function DashboardClient({ user }: { user: User }) {
-    const [person, setPerson] = useState<Person | null>(null);
+    const [persons, setPersons] = useState<Person[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
 
     useEffect(() => {
-        const fetchPerson = async () => {
+        const fetchPersons = async () => {
             const res = await fetch('/api/person');
             if (res.ok) {
                 const data = await res.json();
-                setPerson(data.person);
+                if (data.person) {
+                    const personData = Array.isArray(data.person) ? data.person : [data.person];
+                    const normalizedPersons: Person[] = personData.map((person: Omit<Person, 'messages'> & { messages?: Message[] }) => ({
+                        ...person,
+                        messages: person.messages || []
+                    }));
+                    setPersons(normalizedPersons);
+                } else {
+                    setPersons([]);
+                }
+            } else {
+                console.error("Failed to fetch persons");
+                setPersons([]);
             }
             setLoading(false);
         };
-        fetchPerson();
+        fetchPersons();
     }, []);
 
     const handleCreate = async () => {
@@ -47,8 +59,14 @@ export default function DashboardClient({ user }: { user: User }) {
 
         if (res.ok) {
             const data = await res.json();
-            setPerson(data.person);
+            // Ensure the new person has a messages array
+            const newPerson = {
+                ...data.person,
+                messages: data.person.messages || []
+            };
+            setPersons([...persons, newPerson]);
             setShowModal(false);
+            setName('');
         }
     };
 
@@ -71,45 +89,50 @@ export default function DashboardClient({ user }: { user: User }) {
             </div>
 
             <div className="p-6">
-                {!person ? (
-                    <div>
-                        <p className="mb-4 text-gray-700">You haven&apos;t created any person yet.</p>
-                        <button
-                            onClick={() => setShowModal(true)}
-                            className="bg-blue-600 text-white px-4 py-2 rounded shadow"
-                        >
-                            Create Person
-                        </button>
-                    </div>
-                ) : (
-                    <div className="space-y-6">
-                        <div>
-                            <p className="text-gray-800 text-lg font-semibold">Your Person</p>
-                            <p className="text-gray-600">Name: {person.name}</p>
-                            <p className="text-gray-600">
-                                Link:{' '}
-                                <code>{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
-                            </p>
-                        </div>
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-semibold">Your Persons</h2>
+                    <button
+                        onClick={() => setShowModal(true)}
+                        className="bg-blue-600 text-white px-4 py-2 rounded shadow"
+                    >
+                        Create Person
+                    </button>
+                </div>
 
-                        <div>
-                            <h3 className="text-md font-semibold text-gray-800 mb-2">Received Messages</h3>
-                            {person.messages.length === 0 ? (
-                                <p className="text-gray-500">No messages received yet.</p>
-                            ) : (
-                                <ul className="space-y-3">
-                                    {person.messages.map((msg) => (
-                                        <li
-                                            key={msg.id}
-                                            className="border rounded-lg p-3 bg-gray-50 flex items-center gap-3"
-                                        >
-                                            <span className="text-xl">{msg.emoji}</span>
-                                            <span className="text-gray-800">{msg.content}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
+                {persons.length === 0 ? (
+                    <p className="text-gray-500 mb-6">You haven&apos;t created any person yet.</p>
+                ) : (
+                    <div className="space-y-8">
+                        {persons.map(person => (
+                            <div key={person.slug} className="border rounded-lg p-4 bg-gray-50">
+                                <div className="mb-3">
+                                    <p className="text-lg font-semibold text-gray-800">{person.name}</p>
+                                    <p className="text-gray-600 text-sm mt-1">
+                                        Share link:{' '}
+                                        <code className="bg-gray-100 px-2 py-1 rounded">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
+                                    </p>
+                                </div>
+
+                                <div className="mt-4">
+                                    <h4 className="text-md font-medium text-gray-700 mb-2">Messages</h4>
+                                    {!person.messages || person.messages.length === 0 ? (
+                                        <p className="text-gray-500 text-sm">No messages received yet.</p>
+                                    ) : (
+                                        <ul className="space-y-2">
+                                            {person.messages.map((msg) => (
+                                                <li
+                                                    key={msg.id}
+                                                    className="border rounded-lg p-3 bg-white flex items-center gap-3"
+                                                >
+                                                    <span className="text-xl">{msg.emoji}</span>
+                                                    <span className="text-gray-800">{msg.content}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 )}
 
@@ -134,6 +157,7 @@ export default function DashboardClient({ user }: { user: User }) {
                                 <button
                                     onClick={handleCreate}
                                     className="px-4 py-2 bg-blue-600 text-white rounded"
+                                    disabled={!name.trim()}
                                 >
                                     Create
                                 </button>

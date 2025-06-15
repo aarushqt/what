@@ -6,17 +6,20 @@ import { nanoid } from 'nanoid';
 
 export async function GET() {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) return NextResponse.json({ person: null });
+    if (!session?.user?.email) return NextResponse.json({ person: [] });
 
-    const user = await prisma.user.findUnique({ where: { email: session.user.email } });
-    if (!user) return NextResponse.json({ person: null });
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+    });
 
-    const person = await prisma.person.findFirst({
+    if (!user) return NextResponse.json({ person: [] });
+
+    const persons = await prisma.person.findMany({
         where: { userId: user.id },
         include: { messages: true },
     });
 
-    return NextResponse.json({ person });
+    return NextResponse.json({ person: persons });
 }
 
 
@@ -29,10 +32,14 @@ export async function POST(req: Request) {
     const user = await prisma.user.findUnique({ where: { email: session.user.email } });
     if (!user) return new NextResponse('User not found', { status: 404 });
 
+    const Slug = name.toLowerCase().replace(/\s+/g, '-') + '-' + nanoid(10);
+
+    console.log('Creating person with name:', name, 'and slug:', Slug);
+
     const person = await prisma.person.create({
         data: {
             name,
-            slug: nanoid(10),
+            slug: Slug,
             userId: user.id
         }
     });
