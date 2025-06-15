@@ -13,20 +13,20 @@ const HeroSection = () => {
   const carouselItems = [
     {
       id: 1,
-      title: "Carousel Item 1",
-      content: "Short description about the first feature or benefit",
+      title: "Have your boyfriend sign up",
+      content: "using email and password",
       image: "/Comments.svg"
     },
     {
       id: 2,
-      title: "Carousel Item 2",
-      content: "Short description about the second feature or benefit",
+      title: "Create Link",
+      content: "he will add you as his girlfriend and share a link with you",
       image: "/Comments.svg"
     },
     {
       id: 3,
-      title: "Carousel Item 3",
-      content: "Short description about the third feature or benefit",
+      title: "File a Complaint",
+      content: "Now you can file a complaint for him using the link as many times as you want",
       image: "/Comments.svg"
     },
   ];
@@ -56,7 +56,7 @@ const HeroSection = () => {
       <div className="flex flex-col md:flex-row items-stretch gap-8">
         <div className="w-full md:w-1/2 flex flex-col justify-between">
           <div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold font-playfair tracking-tight text-gray-900 mb-4 sm:mb-6 md:mb-8">
+            <h1 className="text-6xl md:text-6xl lg:text-8xl font-bold font-playfair tracking-tight text-gray-900 mb-4 sm:mb-6 md:mb-8">
               <span className='text-red-300'>Girlfriend</span> Grievance Portal
             </h1>
             <p className="text-lg sm:text-xl text-gray-800 font-lexend">
