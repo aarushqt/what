@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 export default function Home() {
-  const { data: session, status } = useSession({ required: true });
+  const { data: session, status } = useSession();
   const [isSignIn, setIsSignIn] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
