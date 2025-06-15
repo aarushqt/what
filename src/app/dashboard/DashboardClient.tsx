@@ -24,6 +24,8 @@ export default function DashboardClient({ user }: { user: User }) {
     const [persons, setPersons] = useState<Person[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [personToDelete, setPersonToDelete] = useState<Person | null>(null);
     const [name, setName] = useState('');
 
     useEffect(() => {
@@ -70,6 +72,27 @@ export default function DashboardClient({ user }: { user: User }) {
         }
     };
 
+    const handleDelete = async (person: Person) => {
+        setPersonToDelete(person);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!personToDelete) return;
+
+        const res = await fetch(`/api/person?slug=${personToDelete.slug}`, {
+            method: 'DELETE',
+        });
+
+        if (res.ok) {
+            setPersons(persons.filter(p => p.slug !== personToDelete.slug));
+            setShowDeleteModal(false);
+            setPersonToDelete(null);
+        } else {
+            console.error("Failed to delete person");
+        }
+    };
+
     const handleSignOut = () => {
         signOut({ callbackUrl: '/' });
     };
@@ -105,12 +128,20 @@ export default function DashboardClient({ user }: { user: User }) {
                     <div className="space-y-8">
                         {persons.map(person => (
                             <div key={person.slug} className="border rounded-lg p-4 bg-gray-50">
-                                <div className="mb-3">
-                                    <p className="text-lg font-semibold text-gray-800">{person.name}</p>
-                                    <p className="text-gray-600 text-sm mt-1">
-                                        Share link:{' '}
-                                        <code className="bg-gray-100 px-2 py-1 rounded">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
-                                    </p>
+                                <div className="mb-3 flex justify-between items-start">
+                                    <div>
+                                        <p className="text-lg font-semibold text-gray-800">{person.name}</p>
+                                        <p className="text-gray-600 text-sm mt-1">
+                                            Share link:{' '}
+                                            <code className="bg-gray-100 px-2 py-1 rounded">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
+                                        </p>
+                                    </div>
+                                    <button
+                                        onClick={() => handleDelete(person)}
+                                        className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                                    >
+                                        Delete
+                                    </button>
                                 </div>
 
                                 <div className="mt-4">
@@ -160,6 +191,35 @@ export default function DashboardClient({ user }: { user: User }) {
                                     disabled={!name.trim()}
                                 >
                                     Create
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Delete Confirmation Modal */}
+                {showDeleteModal && personToDelete && (
+                    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+                        <div className="bg-white p-6 rounded-lg shadow-xl space-y-4 max-w-md">
+                            <h2 className="text-xl font-semibold text-red-600">Confirm Deletion</h2>
+                            <p className="text-gray-700">
+                                Are you sure you want to delete <span className="font-semibold">{personToDelete.name}</span>? This action cannot be undone and all associated messages will be permanently removed.
+                            </p>
+                            <div className="flex justify-end gap-2">
+                                <button
+                                    onClick={() => {
+                                        setShowDeleteModal(false);
+                                        setPersonToDelete(null);
+                                    }}
+                                    className="px-4 py-2 bg-gray-200 rounded"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmDelete}
+                                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                >
+                                    Delete
                                 </button>
                             </div>
                         </div>
