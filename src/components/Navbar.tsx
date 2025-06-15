@@ -32,7 +32,7 @@ export default function Navbar() {
                                 <span className="text-gray-700">Hey, {session.user?.name || 'User'}</span>
                                 <button
                                     onClick={() => signOut({ callbackUrl: '/' })}
-                                    className="py-2 px-6 bg-red-200 flex items-center gap-4 font-lexend hover:bg-red-100 text-2xl border-2 transition duration-300"
+                                    className="py-2 px-6 bg-red-200 flex items-center gap-4 font-lexend hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] text-2xl border-2 transition duration-300"
                                 >
                                     Logout
                                 </button>
@@ -40,7 +40,7 @@ export default function Navbar() {
                         ) : (
                             <Link
                                 href="/auth?mode=signin"
-                                className="py-2 px-6 bg-red-200 flex items-center gap-4 font-lexend hover:bg-red-100 text-2xl border-2 transition duration-300"
+                                className="py-2 px-6 bg-red-200 flex items-center gap-4 font-lexend hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] text-2xl border-2 transition duration-300"
                             ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M23 2H20V22H23V2Z" fill="black" />
                                     <path d="M8 4H10V5H11V6H12V7H13V8H14V9H15V10H16V11H17V13H16V14H15V15H14V16H13V17H12V18H11V19H10V20H8V19H7V17H8V16H9V15H10V14H1V10H10V9H9V8H8V7H7V5H8V4Z" fill="black" />

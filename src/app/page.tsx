@@ -66,7 +66,7 @@ const HeroSection = () => {
 
           <div className="mt-auto pt-8">
             <Link href="/auth?mode=signup" className="inline-block">
-              <button className="bg-red-200 hover:bg-red-100 flex items-center gap-4 font-lexend text-2xl mb-10 font-medium py-3 px-6 border-2 transition duration-300 shadow-[10px_10px_0px_0px_rgba(0,0,0)]">
+              <button className="bg-red-200 flex items-center gap-4 font-lexend text-2xl mb-10 font-medium py-3 px-6 border-2 transition duration-200 shadow-[10px_10px_0px_0px_rgba(0,0,0)] hover:shadow-[15px_15px_0px_0px_rgba(0,0,0)]">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M23 2H20V22H23V2Z" fill="black" />
                   <path d="M8 4H10V5H11V6H12V7H13V8H14V9H15V10H16V11H17V13H16V14H15V15H14V16H13V17H12V18H11V19H10V20H8V19H7V17H8V16H9V15H10V14H1V10H10V9H9V8H8V7H7V5H8V4Z" fill="black" />
@@ -99,7 +99,7 @@ const HeroSection = () => {
                       />
                     </div>
 
-                    <h3 className="text-xl font-bold text-gray-800 mb-2 text-center">
+                    <h3 className="text-3xl font-playfair font-bold text-gray-800 mb-2 text-center">
                       {item.title}
                     </h3>
                     <p className="text-gray-700 text-center">
@@ -113,20 +113,20 @@ const HeroSection = () => {
             {/* navigation arrows */}
             <button
               onClick={prevSlide}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 z-20"
+              className="absolute left-2 top-1/2 -translate-y-1/2 hover:opacity-60 rounded-full p-2 z-20"
               aria-label="Previous slide"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 5V7H16V8H15V9H14V10H13V11H12V13H13V14H14V15H15V16H16V17H17V19H16V20H14V19H13V18H12V17H11V16H10V15H9V14H8V13H7V11H8V10H9V9H10V8H11V7H12V6H13V5H14V4H16V5H17Z" fill="black" />
               </svg>
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 z-20"
+              className="absolute right-2 top-1/2 -translate-y-1/2 hover:opacity-60 rounded-full p-2 z-20"
               aria-label="Next slide"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 19V17H8V16H9V15H10V14H11V13H12V11H11V10H10V9H9V8H8V7H7V5H8V4H10V5H11V6H12V7H13V8H14V9H15V10H16V11H17V13H16V14H15V15H14V16H13V17H12V18H11V19H10V20H8V19H7Z" fill="black" />
               </svg>
             </button>
           </div>
@@ -137,7 +137,7 @@ const HeroSection = () => {
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors duration-300 ${index === currentSlide ? 'bg-blue-600' : 'bg-gray-300'
+                className={`w-3 h-3 rounded-full transition-colors duration-300 ${index === currentSlide ? 'bg-red-400' : 'bg-gray-300'
                   }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
