@@ -3,6 +3,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -18,9 +19,12 @@ export default function Navbar() {
                 <div className="flex justify-between h-24">
                     <div className="flex items-center">
                         <Link href="/" className="flex-shrink-0 flex items-center gap-4">
-                            <svg width="30.75" height="25" viewBox="0 0 52 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M51.6663 7V18.6667H49.333V21H46.9997V23.3333H44.6663V25.6667H42.333V28H39.9997V30.3333H37.6663V32.6667H35.333V35H32.9997V37.3333H30.6663V39.6667H28.333V42H23.6663V39.6667H21.333V37.3333H18.9997V35H16.6663V32.6667H14.333V30.3333H11.9997V28H9.66634V25.6667H7.33301V23.3333H4.99967V21H2.66634V18.6667H0.333008V7H2.66634V4.66667H4.99967V2.33333H7.33301V0H21.333V2.33333H23.6663V4.66667H28.333V2.33333H30.6663V0H44.6663V2.33333H46.9997V4.66667H49.333V7H51.6663Z" fill="black" />
-                            </svg>
+                            <Image
+                                src="/heart.svg"
+                                width={30}
+                                height={30}
+                                alt="Heart Logo"
+                            />
                             <span className="text-3xl font-bold font-playfair text-black">Office of Girlfriend Affairs</span>
                         </Link>
                     </div>

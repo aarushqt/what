@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AuthProvider from "@/components/providers/SessionProvider";
+import Footer from "@/components/Footer";
 import "./globals.css";
 import { Playfair_Display, Lexend } from "next/font/google";
 
@@ -27,9 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${lexend.variable} ${playfair.variable}`}>
+      <body className={`${lexend.variable} ${playfair.variable} flex flex-col min-h-screen`}>
         <AuthProvider>
-          {children}
+          <div className="flex-grow">
+            {children}
+          </div>
+          <Footer />
         </AuthProvider>
       </body>
     </html>
