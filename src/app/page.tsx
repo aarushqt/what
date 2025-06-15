@@ -56,28 +56,30 @@ const HeroSection = () => {
       <div className="flex flex-col md:flex-row items-stretch gap-8">
         <div className="w-full md:w-1/2 flex flex-col justify-between">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-6">
-              Your Compelling Headline Here
+            <h1 className="text-6xl font-bold font-playfair tracking-tight text-gray-900 sm:text-6xl md:text-8xl mb-8">
+              <span className='text-red-300'>Girlfriend</span> Grievance Portal
             </h1>
-            <p className="text-lg text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Vivamus lacinia odio vitae vestibulum vestibulum.
-              Cras porttitor metus in nibh finibus lobortis.
+            <p className="text-xl text-gray-800 font-lexend">
+              Make your boyfriends sign up to get your complaints urgently.
             </p>
           </div>
 
           <div className="mt-auto pt-8">
             <Link href="/auth?mode=signup" className="inline-block">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow-md transition duration-300">
-                Sign Up Now
+              <button className="bg-red-200 hover:bg-red-100 flex items-center gap-4 font-lexend text-2xl mb-10 font-medium py-3 px-6 border-2 transition duration-300 shadow-[10px_10px_0px_0px_rgba(0,0,0)]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 2H20V22H23V2Z" fill="black" />
+                  <path d="M8 4H10V5H11V6H12V7H13V8H14V9H15V10H16V11H17V13H16V14H15V15H14V16H13V17H12V18H11V19H10V20H8V19H7V17H8V16H9V15H10V14H1V10H10V9H9V8H8V7H7V5H8V4Z" fill="black" />
+                </svg>
+                Sign Up
               </button>
             </Link>
           </div>
         </div>
 
         <div className="w-full md:w-1/2 relative">
-          <div className="relative overflow-hidden rounded-lg shadow-lg">
-            <div className="relative h-72 sm:h-80 md:h-96 overflow-hidden">
+          <div className="relative overflow-hidden">
+            <div className="relative h-72 sm:h-80 md:h-[50vh] overflow-hidden">
               <div
                 className="flex transition-transform duration-500 ease-in-out h-full"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -85,7 +87,7 @@ const HeroSection = () => {
                 {carouselItems.map((item) => (
                   <div
                     key={item.id}
-                    className="min-w-full h-full bg-red-200 rounded-lg flex flex-col items-center justify-center p-6"
+                    className="min-w-full h-full bg-red-200 border-2 flex flex-col items-center justify-center p-6"
                   >
                     <div className="relative w-28 h-28 mb-6">
                       <Image
