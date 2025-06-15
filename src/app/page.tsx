@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function Home() {
+  const { data: session, status } = useSession();
   const [isSignIn, setIsSignIn] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -12,6 +16,17 @@ export default function Home() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      router.push('/dashboard');
+    }
+  }, [session, router]);
+
+  if (status === 'loading') {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
 
   const toggleForm = () => {
     setIsSignIn(!isSignIn);
@@ -61,6 +76,32 @@ export default function Home() {
     }
   };
 
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    setIsLoading(true);
+
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+
+      // on successful login
+      router.push('/dashboard');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to sign in');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
@@ -81,8 +122,8 @@ export default function Home() {
         )}
 
         {isSignIn ? (
-          // Sign In Form
-          <form className="space-y-4">
+          // sign in form
+          <form className="space-y-4" onSubmit={handleSignIn}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email
@@ -120,7 +161,7 @@ export default function Home() {
             </button>
           </form>
         ) : (
-          // Sign Up Form
+          // sign up form
           <form className="space-y-4" onSubmit={handleSignUp}>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">

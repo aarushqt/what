@@ -33,10 +33,10 @@ model Person {
 }
 
 model Message {
-  id        String   @id @default(uuid())
-  message   String
+  id        String   @id @default(cuid())
+  content   String
   emoji     String
-  personId  String
   person    Person   @relation(fields: [personId], references: [id])
+  personId  String
   createdAt DateTime @default(now())
 }
