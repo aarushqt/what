@@ -21,21 +21,23 @@ async function submitMessage(formData: FormData) {
     redirect(`/share/${slug}?success=true`);
 }
 
-export default async function SharePage({
-    params,
-    searchParams,
-}: {
-    params: { slug: string };
-    searchParams?: { success?: string };
-}) {
+type PageProps = {
+    params: Promise<{ slug: string }>;
+    searchParams?: Promise<{ success?: string }>;
+};
+
+export default async function SharePage({ params, searchParams }: PageProps) {
+    const { slug } = await params;
+    const resolvedSearchParams = searchParams ? await searchParams : undefined;
+
     const person = await prisma.person.findUnique({
-        where: { slug: params.slug },
+        where: { slug },
         include: { user: true },
     });
 
     if (!person) return notFound();
 
-    const success = searchParams?.success === 'true';
+    const success = resolvedSearchParams?.success === 'true';
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-6">
@@ -56,11 +58,8 @@ export default async function SharePage({
                     action={submitMessage}
                     className="flex flex-col gap-4 w-full max-w-md"
                 >
-                    <input
-                        type="hidden"
-                        name="slug"
-                        value={person.slug}
-                    />
+                    <input type="hidden" name="slug" value={slug} />
+
                     <textarea
                         name="content"
                         placeholder="Write your message here..."
