@@ -1,6 +1,5 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-// import { revalidatePath } from 'next/cache';
 
 interface Props {
     params: { slug: string };
@@ -9,16 +8,18 @@ interface Props {
 export default async function SharePage({ params }: Props) {
     const resolvedParams = await params;
     const person = await prisma.person.findUnique({
-        where: { slug: resolvedParams.slug }
+        where: { slug: resolvedParams.slug },
+        include: { user: true },
     });
 
     if (!person) return notFound();
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-6">
-            <h1 className="text-2xl font-semibold mb-4 text-center">
-                Leave a message for <span className="text-blue-600">{person.name}</span>
-            </h1>
+            <h1 className="text-2xl font-bold mb-4">Hello, {person.name} 👋</h1>
+            <p className="text-lg text-gray-700 mb-6">
+                Leave a message for <span className="font-semibold">{person.user.name || person.user.email}</span>
+            </p>
 
             <form
                 action={`/api/message`}
