@@ -101,11 +101,13 @@ export default function DashboardClient({ }: { user: User }) {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-lexend font-semibold">Your Girlfriend</h2>
+                    <h2 className="text-4xl font-playfair text-red-400 font-semibold">Your Girlfriend</h2>
                     <button
                         onClick={() => setShowModal(true)}
-                        className="bg-red-200 py-3 px-10 mt-6 border-2 border-black text-black font-lexend text-2xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
-                    >
+                        className="bg-red-200 flex items-center gap-4 py-3 px-10 border-2 border-black text-black font-lexend text-2xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
+                    ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23 11V13H22V14H14V22H13V23H11V22H10V14H2V13H1V11H2V10H10V2H11V1H13V2H14V10H22V11H23Z" fill="black" />
+                        </svg>
                         Add girlfriend
                     </button>
                 </div>
@@ -162,35 +164,38 @@ export default function DashboardClient({ }: { user: User }) {
 
                 {showModal && (
                     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                        <div className="bg-white p-6 rounded-lg shadow-xl space-y-4">
-                            <h2 className="text-xl font-semibold">Enter a name for the person</h2>
+                        <div className="bg-white border-2 p-6 space-y-4">
+                            <h2 className="text-3xl font-playfair">What&apos;s her name?</h2>
                             <input
                                 type="text"
-                                className="border px-3 py-2 rounded w-full"
+                                className="border px-3 py-2 w-full"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                placeholder="e.g. Aryan's Anonymous Box"
+                                placeholder="pookie, sweetheart, etc."
                             />
-                            <div className="flex justify-end gap-2">
+                            <div className="flex justify-between items-center mt-4">
                                 <button
                                     onClick={() => setShowModal(false)}
-                                    className="px-4 py-2 bg-gray-200 rounded"
+                                    className="px-4 py-2 bg-gray-200 border-2 cursor-pointer font-lexend text-xl font-medium hover:shadow-[5px_5px_0px_0px_rgba(0,0,0)] transition duration-200"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleCreate}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                                    className="px-4 py-2 flex item gap-4 bg-red-200 border-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
                                     disabled={!name.trim()}
-                                >
-                                    Create
+                                ><svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M23 9V10H22V11H21V12H20V13H19V14H17V13H16V12H15V11H16V10H17V11H19V10H20V9H21V8H22V9H23Z" fill="black" />
+                                        <path d="M13 6V9H12V11H10V12H7V11H5V9H4V6H5V4H7V3H10V4H12V6H13Z" fill="black" />
+                                        <path d="M16 16V20H15V21H2V20H1V16H2V15H3V14H4V13H6V14H11V13H13V14H14V15H15V16H16Z" fill="black" />
+                                    </svg>
+                                    Add
                                 </button>
                             </div>
                         </div>
                     </div>
                 )}
 
-                {/* Delete Confirmation Modal */}
                 {showDeleteModal && personToDelete && (
                     <div className="fixed inset-0 bg-black/40 font-lexend flex items-center justify-center z-50">
                         <div className="bg-white p-6 space-y-4 max-w-md border-2">

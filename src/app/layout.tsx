@@ -3,6 +3,7 @@ import AuthProvider from "@/components/providers/SessionProvider";
 import Footer from "@/components/Footer";
 import "./globals.css";
 import { Playfair_Display, Lexend } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lexend.variable} ${playfair.variable} flex flex-col min-h-screen`}>
+        <Analytics />
         <AuthProvider>
           <div className="flex-grow">
             {children}

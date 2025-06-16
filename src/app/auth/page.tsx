@@ -169,7 +169,7 @@ function AuthContent() {
                         <div className="sm:hidden flex items-center">
                             <button
                                 type="button"
-                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                                className="inline-flex items-center justify-center p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                                 onClick={toggleMenu}
                             >
                                 <svg
@@ -212,13 +212,13 @@ function AuthContent() {
                     </div>
 
                     {error && (
-                        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-md">
+                        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700">
                             {error}
                         </div>
                     )}
 
                     {success && (
-                        <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-md">
+                        <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700">
                             {success}
                         </div>
                     )}
