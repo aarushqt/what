@@ -64,7 +64,15 @@ const HeroSection = () => {
             </p>
           </div>
 
-          <div className="mt-6 sm:mt-auto pt-4 sm:pt-8">
+          <Image
+            src="/emoticons/puppy-face.svg"
+            alt="happy"
+            width={90}
+            height={60}
+            className="mt-4"
+          />
+
+          <div className="sm:mt-auto pt-4 sm:pt-8">
             <Link href="/auth?mode=signup" className="inline-block">
               <button className="bg-red-200 flex items-center gap-2 sm:gap-4 font-lexend text-xl sm:text-2xl mb-6 sm:mb-10 font-medium py-2 px-4 sm:py-3 sm:px-6 border-2 transition duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[15px_15px_0px_0px_rgba(0,0,0)]">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -99,10 +107,10 @@ const HeroSection = () => {
                       />
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-playfair font-bold text-gray-800 mb-1 sm:mb-2 text-center break-words">
+                    <h3 className="text-xl sm:text-2xl px-16 md:text-5xl font-playfair font-bold text-gray-800 mb-1 sm:mb-2 text-center break-words">
                       {item.title}
                     </h3>
-                    <p className="text-sm sm:text-base font-lexend text-gray-700 text-center px-2 break-words">
+                    <p className="text-sm sm:text-base px-16 mt-6 font-lexend text-gray-700 text-center break-words">
                       {item.content}
                     </p>
                   </div>
