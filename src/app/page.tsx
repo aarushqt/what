@@ -52,11 +52,11 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="max-w-7xl mx-auto md:py-8 sm:py-4 md:mt-12 mt-16 px-4">
       <div className="flex flex-col md:flex-row items-stretch gap-8">
         <div className="w-full md:w-1/2 flex flex-col justify-between">
           <div>
-            <h1 className="text-6xl md:text-6xl lg:text-8xl font-bold font-playfair tracking-tight text-gray-900 mb-4 sm:mb-6 md:mb-8">
+            <h1 className="text-7xl md:text-7xl lg:text-8xl font-bold font-playfair tracking-tight text-gray-900 mb-4 sm:mb-6 md:mb-8">
               <span className='text-red-300'>Girlfriend</span> Grievance Portal
             </h1>
             <p className="text-lg sm:text-xl text-gray-800 font-lexend">
@@ -107,10 +107,10 @@ const HeroSection = () => {
                       />
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl px-16 md:text-5xl font-playfair font-bold text-gray-800 mb-1 sm:mb-2 text-center break-words">
+                    <h3 className="text-xl sm:text-2xl md:px-16 md:text-5xl font-playfair font-bold text-gray-800 mb-1 sm:mb-2 text-center break-words">
                       {item.title}
                     </h3>
-                    <p className="text-sm sm:text-base px-16 mt-6 font-lexend text-gray-700 text-center break-words">
+                    <p className="text-sm sm:text-base md:px-16 mt-6 font-lexend text-gray-700 text-center break-words">
                       {item.content}
                     </p>
                   </div>
@@ -182,9 +182,9 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div>
       <Navbar />
-      <main className="flex-grow flex flex-col items-center justify-center p-4">
+      <main className="flex-grow flex flex-col items-center justify-center align-middle px-4 py-auto">
         <HeroSection />
       </main>
     </div>
