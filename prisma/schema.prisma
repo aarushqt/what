@@ -39,4 +39,5 @@ model Message {
   person    Person   @relation(fields: [personId], references: [id])
   personId  String
   createdAt DateTime @default(now())
+  done      Boolean  @default(false)
 }

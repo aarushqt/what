@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import Navbar from '@/components/Navbar';
+import SubmitForm from './SubmitForm';
 
 async function submitMessage(formData: FormData) {
     'use server';
@@ -57,41 +58,7 @@ export default async function SharePage({ params, searchParams }: PageProps) {
                         </p>
                     </div>
                 ) : (
-                    <form
-                        action={submitMessage}
-                        className="flex flex-col gap-4 w-full max-w-md"
-                    >
-                        <input type="hidden" name="slug" value={slug} />
-
-                        <textarea
-                            name="content"
-                            placeholder="Write your message here..."
-                            required
-                            className="border p-3 rounded resize-none h-32"
-                        />
-                        <p className='text-center font-bold text-xl'>How are you feeling?</p>
-                        <div className="flex gap-2 justify-between">
-                            {['😄', '😢', '🔥', '💀', '❤️'].map((emoji) => (
-                                <label key={emoji} className="cursor-pointer group">
-                                    <input
-                                        type="radio"
-                                        name="emoji"
-                                        value={emoji}
-                                        className="hidden peer"
-                                        required
-                                    />
-                                    <span className="text-3xl inline-block p-2 rounded-full peer-checked:border-2 peer-checked:border-black">{emoji}</span>
-                                </label>
-                            ))}
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="bg-red-200 py-3 mt-6 border-2 border-black text-black font-lexend text-2xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-300 flex items-center justify-center"
-                        >
-                            Submit
-                        </button>
-                    </form>
+                    <SubmitForm slug={slug} submitMessage={submitMessage} />
                 )}
             </div>
         </>

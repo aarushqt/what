@@ -27,6 +27,12 @@ export default function DashboardClient({ }: { user: User }) {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [personToDelete, setPersonToDelete] = useState<Person | null>(null);
     const [name, setName] = useState('');
+    const [showDeleteMessageModal, setShowDeleteMessageModal] = useState(false);
+    const [messageToDelete, setMessageToDelete] = useState<Message | null>(null);
+    const [currentPersonSlugForMessageDelete, setCurrentPersonSlugForMessageDelete] = useState<string | null>(null);
+    const [isCreatingPerson, setIsCreatingPerson] = useState(false);
+    const [isDeletingPerson, setIsDeletingPerson] = useState(false);
+    const [isDeletingMessage, setIsDeletingMessage] = useState(false);
 
     useEffect(() => {
         const fetchPersons = async () => {
@@ -53,22 +59,29 @@ export default function DashboardClient({ }: { user: User }) {
     }, []);
 
     const handleCreate = async () => {
-        const res = await fetch('/api/person', {
-            method: 'POST',
-            body: JSON.stringify({ name }),
-            headers: { 'Content-Type': 'application/json' },
-        });
+        setIsCreatingPerson(true);
+        try {
+            const res = await fetch('/api/person', {
+                method: 'POST',
+                body: JSON.stringify({ name }),
+                headers: { 'Content-Type': 'application/json' },
+            });
 
-        if (res.ok) {
-            const data = await res.json();
-            // Ensure the new person has a messages array
-            const newPerson = {
-                ...data.person,
-                messages: data.person.messages || []
-            };
-            setPersons([...persons, newPerson]);
-            setShowModal(false);
-            setName('');
+            if (res.ok) {
+                const data = await res.json();
+                // Ensure the new person has a messages array
+                const newPerson = {
+                    ...data.person,
+                    messages: data.person.messages || []
+                };
+                setPersons([...persons, newPerson]);
+                setShowModal(false);
+                setName('');
+            }
+        } catch (error) {
+            console.error("Error creating person:", error);
+        } finally {
+            setIsCreatingPerson(false);
         }
     };
 
@@ -80,16 +93,62 @@ export default function DashboardClient({ }: { user: User }) {
     const confirmDelete = async () => {
         if (!personToDelete) return;
 
-        const res = await fetch(`/api/person?slug=${personToDelete.slug}`, {
-            method: 'DELETE',
-        });
+        setIsDeletingPerson(true);
+        try {
+            const res = await fetch(`/api/person?slug=${personToDelete.slug}`, {
+                method: 'DELETE',
+            });
 
-        if (res.ok) {
-            setPersons(persons.filter(p => p.slug !== personToDelete.slug));
-            setShowDeleteModal(false);
-            setPersonToDelete(null);
-        } else {
-            console.error("Failed to delete person");
+            if (res.ok) {
+                setPersons(persons.filter(p => p.slug !== personToDelete.slug));
+                setShowDeleteModal(false);
+                setPersonToDelete(null);
+            } else {
+                console.error("Failed to delete person");
+            }
+        } catch (error) {
+            console.error("Error deleting person:", error);
+        } finally {
+            setIsDeletingPerson(false);
+        }
+    };
+
+    const handleDeleteMessage = (message: Message, personSlug: string) => {
+        setMessageToDelete(message);
+        setCurrentPersonSlugForMessageDelete(personSlug);
+        setShowDeleteMessageModal(true);
+    };
+
+    const confirmDeleteMessage = async () => {
+        if (!messageToDelete || !currentPersonSlugForMessageDelete) return;
+
+        setIsDeletingMessage(true);
+        try {
+            const res = await fetch(`/api/message?id=${messageToDelete.id}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                setPersons(prevPersons =>
+                    prevPersons.map(person =>
+                        person.slug === currentPersonSlugForMessageDelete
+                            ? {
+                                ...person,
+                                messages: person.messages.filter(msg => msg.id !== messageToDelete.id),
+                            }
+                            : person
+                    )
+                );
+                setShowDeleteMessageModal(false);
+                setMessageToDelete(null);
+                setCurrentPersonSlugForMessageDelete(null);
+            } else {
+                console.error("Failed to delete message");
+            }
+        } catch (error) {
+            console.error("Error deleting message:", error);
+        } finally {
+            setIsDeletingMessage(false);
         }
     };
 
@@ -104,9 +163,9 @@ export default function DashboardClient({ }: { user: User }) {
                     <h2 className="text-4xl font-playfair text-red-400 font-semibold">Your Girlfriend</h2>
                     <button
                         onClick={() => setShowModal(true)}
-                        className="bg-red-200 flex items-center gap-4 py-3 px-10 border-2 border-black text-black font-lexend text-2xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
-                    ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M23 11V13H22V14H14V22H13V23H11V22H10V14H2V13H1V11H2V10H10V2H11V1H13V2H14V10H22V11H23Z" fill="black" />
+                        className="bg-red-200 flex hover:cursor-pointer items-center gap-4 py-3 px-10 border-2 border-black text-black font-lexend text-2xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
+                    ><svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" clipRule="evenodd" d="M18 2H12V3.99995H10.0002V9.99995H12.0002V4H18V2ZM18 10H12V12H18V10ZM18.0002 3.99995H20.0002V9.99995H18.0002V3.99995ZM7 15.9999H9V14H21V16H9V20H21.0002V15.9999H23.0002V21.9999H23V22H7V21.9999V20V15.9999ZM3 8H5V10H7V12H5V14H3V12H1V10H3V8Z" fill="black" />
                         </svg>
                         Add girlfriend
                     </button>
@@ -121,7 +180,7 @@ export default function DashboardClient({ }: { user: User }) {
                                 <div className="mb-3 flex justify-between items-start">
                                     <div>
                                         <p className="text-3xl font-semibold text-gray-800 font-playfair">{person.name}</p>
-                                        <p className="text-gray-600 text-sm mt-1">
+                                        <p className="text-gray-700 text-sm mt-1">
                                             Complaint link:{' '}
                                             <code className="bg-gray-100 px-2 py-1 rounded">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
                                         </p>
@@ -131,27 +190,47 @@ export default function DashboardClient({ }: { user: User }) {
                                         className='hover:cursor-pointer hover:scale-110 transition-transform duration-200'
 
                                     >
-                                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M18 5V4H17V3H16V2H15V1H9V2H8V3H7V4H6V5H2V7H4V22H5V23H19V21H20V7H21V5H18ZM8 4H9V3H15V4H16V5H8V4ZM18 21H6V7H18V21Z" fill="black" />
-                                            <path d="M10 9H8V19H10V9Z" fill="black" />
-                                            <path d="M16 9H14V19H16V9Z" fill="black" />
+                                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M5 3H3V21H5H19H21V3H19H5ZM19 5V19H5V5H19ZM16 11H8V13H16V11Z" fill="black" />
                                         </svg>
                                     </button>
                                 </div>
 
                                 <div className="mt-4">
-                                    <h4 className="text-md font-medium text-gray-700 mb-2">Messages</h4>
+                                    <h4 className="text-xl font-lexend font-medium text-gray-700 mb-4">This is how deep in the water you are:</h4>
                                     {!person.messages || person.messages.length === 0 ? (
-                                        <p className="text-gray-500 text-sm">No messages received yet.</p>
+                                        <p className="text-gray-500 text-sm">Damn it&apos;s so peaceful here!</p>
                                     ) : (
                                         <ul className="space-y-2">
                                             {person.messages.map((msg) => (
                                                 <li
                                                     key={msg.id}
-                                                    className="border-1 p-3 bg-red-100 flex items-center gap-3"
+                                                    className="flex gap-2 items-center font-lexend justify-center"
                                                 >
-                                                    <span className="text-xl">{msg.emoji}</span>
-                                                    <span className="text-gray-800">{msg.content}</span>
+                                                    <div className="flex-grow border-2 p-3 bg-red-100">
+                                                        <div className="flex items-center gap-6">
+                                                            <span className="text-3xl">{msg.emoji}</span>
+                                                            <span className="text-gray-800">{msg.content}</span>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => handleDeleteMessage(msg, person.slug)}
+                                                        className="flex-shrink-0 flex items-center gap-4 px-4 py-3 bg-red-200 border-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
+                                                        title="Mark Resolved"
+                                                        disabled={isDeletingMessage && messageToDelete?.id === msg.id}
+                                                    >
+                                                        {isDeletingMessage && messageToDelete?.id === msg.id ? (
+                                                            <svg className="animate-spin h-6 w-6 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                            </svg>
+                                                        ) : (
+                                                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M15 6H17V8H15V6ZM13 10V8H15V10H13ZM11 12V10H13V12H11ZM9 14V12H11V14H9ZM7 16V14H9V16H7ZM5 16H7V18H5V16ZM3 14H5V16H3V14ZM3 14H1V12H3V14ZM11 16H13V18H11V16ZM15 14V16H13V14H15ZM17 12V14H15V12H17ZM19 10V12H17V10H19ZM21 8H19V10H21V8ZM21 8H23V6H21V8Z" fill="black" />
+                                                            </svg>
+                                                        )}
+                                                        {isDeletingMessage && messageToDelete?.id === msg.id ? "Processing..." : "Mark as Done"}
+                                                    </button>
                                                 </li>
                                             ))}
                                         </ul>
@@ -182,14 +261,21 @@ export default function DashboardClient({ }: { user: User }) {
                                 </button>
                                 <button
                                     onClick={handleCreate}
-                                    className="px-4 py-2 flex item gap-4 bg-red-200 border-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
-                                    disabled={!name.trim()}
-                                ><svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M23 9V10H22V11H21V12H20V13H19V14H17V13H16V12H15V11H16V10H17V11H19V10H20V9H21V8H22V9H23Z" fill="black" />
-                                        <path d="M13 6V9H12V11H10V12H7V11H5V9H4V6H5V4H7V3H10V4H12V6H13Z" fill="black" />
-                                        <path d="M16 16V20H15V21H2V20H1V16H2V15H3V14H4V13H6V14H11V13H13V14H14V15H15V16H16Z" fill="black" />
-                                    </svg>
-                                    Add
+                                    className="px-4 py-2 flex items-center gap-4 bg-red-200 border-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
+                                    disabled={!name.trim() || isCreatingPerson}
+                                >
+                                    {isCreatingPerson ? (
+                                        <svg width="24" height="24" className='animate-spin' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M12.9999 2H10.9999V8H12.9999V2ZM12.9999 16H10.9999V22H12.9999V16ZM21.9998 11V13L15.9998 13V11H21.9998ZM7.99963 13V11H1.99963V13L7.99963 13ZM14.9996 6.99997H16.9996V8.99997H14.9996V6.99997ZM18.9995 4.99997H16.9995V6.99997H18.9995V4.99997ZM8.99963 6.99997H6.99963V8.99997H8.99963V6.99997ZM4.99973 4.99997H6.99973V6.99997H4.99973V4.99997ZM14.9996 17H16.9995V18.9999H18.9995V16.9999H16.9996V15H14.9996V17ZM6.99963 16.9999V15H8.99963V17H6.99973V18.9999H4.99973V16.9999H6.99963Z" fill="black" />
+                                        </svg>
+                                    ) : (
+                                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M23 9V10H22V11H21V12H20V13H19V14H17V13H16V12H15V11H16V10H17V11H19V10H20V9H21V8H22V9H23Z" fill="black" />
+                                            <path d="M13 6V9H12V11H10V12H7V11H5V9H4V6H5V4H7V3H10V4H12V6H13Z" fill="black" />
+                                            <path d="M16 16V20H15V21H2V20H1V16H2V15H3V14H4V13H6V14H11V13H13V14H14V15H15V16H16Z" fill="black" />
+                                        </svg>
+                                    )}
+                                    {isCreatingPerson ? "Adding..." : "Add"}
                                 </button>
                             </div>
                         </div>
@@ -209,15 +295,59 @@ export default function DashboardClient({ }: { user: User }) {
                                         setShowDeleteModal(false);
                                         setPersonToDelete(null);
                                     }}
-                                    className="px-4 py-2 bg-gray-200 border-2 cursor-pointer"
+                                    className="px-4 py-2 text-xl bg-gray-200 border-2 cursor-pointer"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={confirmDelete}
-                                    className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 border-2 border-black cursor-pointer"
+                                    className="px-4 py-2 bg-red-200 border-2 border-black cursor-pointer flex items-center gap-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
+                                    disabled={isDeletingPerson}
                                 >
-                                    Delete
+                                    {isDeletingPerson && (
+                                        <svg width="24" height="24" className='animate-spin' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M12.9999 2H10.9999V8H12.9999V2ZM12.9999 16H10.9999V22H12.9999V16ZM21.9998 11V13L15.9998 13V11H21.9998ZM7.99963 13V11H1.99963V13L7.99963 13ZM14.9996 6.99997H16.9996V8.99997H14.9996V6.99997ZM18.9995 4.99997H16.9995V6.99997H18.9995V4.99997ZM8.99963 6.99997H6.99963V8.99997H8.99963V6.99997ZM4.99973 4.99997H6.99973V6.99997H4.99973V4.99997ZM14.9996 17H16.9995V18.9999H18.9995V16.9999H16.9996V15H14.9996V17ZM6.99963 16.9999V15H8.99963V17H6.99973V18.9999H4.99973V16.9999H6.99963Z" fill="black" />
+                                        </svg>
+                                    )}
+                                    {isDeletingPerson ? "Deleting..." : "Delete"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {showDeleteMessageModal && messageToDelete && (
+                    <div className="fixed inset-0 bg-black/40 font-lexend flex items-center justify-center z-50">
+                        <div className="bg-white p-6 space-y-4 max-w-md border-2">
+                            <h2 className="text-4xl font-semibold font-playfair text-red-500">Are you sure?</h2>
+                            <p className="text-gray-700">
+                                Are you sure you have resolved this? My job is just to warn you lil bro!
+                            </p>
+                            <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-600">
+                                {messageToDelete.emoji} {messageToDelete.content}
+                            </blockquote>
+                            <div className="flex justify-between gap-2 mt-10">
+                                <button
+                                    onClick={() => {
+                                        setShowDeleteMessageModal(false);
+                                        setMessageToDelete(null);
+                                        setCurrentPersonSlugForMessageDelete(null);
+                                    }}
+                                    className="px-4 py-2 text-xl bg-gray-200 border-2 cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmDeleteMessage}
+                                    className="px-4 py-2 bg-red-200 border-2 border-black cursor-pointer flex items-center gap-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
+                                    disabled={isDeletingMessage}
+                                >
+                                    {isDeletingMessage && (
+                                        <svg width="24" height="24" className='animate-spin' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M12.9999 2H10.9999V8H12.9999V2ZM12.9999 16H10.9999V22H12.9999V16ZM21.9998 11V13L15.9998 13V11H21.9998ZM7.99963 13V11H1.99963V13L7.99963 13ZM14.9996 6.99997H16.9996V8.99997H14.9996V6.99997ZM18.9995 4.99997H16.9995V6.99997H18.9995V4.99997ZM8.99963 6.99997H6.99963V8.99997H8.99963V6.99997ZM4.99973 4.99997H6.99973V6.99997H4.99973V4.99997ZM14.9996 17H16.9995V18.9999H18.9995V16.9999H16.9996V15H14.9996V17ZM6.99963 16.9999V15H8.99963V17H6.99973V18.9999H4.99973V16.9999H6.99963Z" fill="black" />
+                                        </svg>
+                                    )}
+                                    {isDeletingMessage ? "Deleting..." : "Delete Message"}
                                 </button>
                             </div>
                         </div>

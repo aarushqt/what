@@ -3,4 +3,31 @@
 @theme {
   --font-playfair: 'Playfair Display', serif;
   --font-lexend: 'Lexend', sans-serif;
+  --heartbeat-animation: heartbeat 3s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.1);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  75% {
+    transform: scale(1.1);
+  }
+}
+
+@layer utilities {
+  .animate-heartbeat {
+    animation: var(--heartbeat-animation);
+  }
 }

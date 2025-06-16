@@ -24,22 +24,22 @@ export default function Navbar() {
                                 width={30}
                                 height={30}
                                 alt="Heart Logo"
+                                className='animate-heartbeat'
                             />
                             <span className="text-3xl font-bold font-playfair text-black">Office of Girlfriend Affairs</span>
                         </Link>
                     </div>
 
                     {/* Desktop navigation */}
-                    <div className="hidden sm:flex items-center">
+                    <div className="hidden sm:flex items-center font-lexend">
                         {status === 'authenticated' ? (
                             <div className="flex items-center space-x-4">
-                                <span className="text-2xl font-bold">Hey, {session.user?.name || 'User'}</span>
+                                <p className="text-2xl">Hey, <span className='font-bold'>{session.user?.name || 'User'}</span></p>
                                 <button
                                     onClick={() => signOut({ callbackUrl: '/' })}
                                     className="py-2 px-6 bg-red-200 flex items-center gap-4 font-lexend hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] text-2xl border-2 transition duration-300"
-                                ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M14 5V4H16V5H17V6H18V7H19V8H20V9H21V10H22V11H23V13H22V14H21V15H20V16H19V17H18V18H17V19H16V20H14V19H13V17H14V16H15V15H16V14H7V10H16V9H15V8H14V7H13V5H14Z" fill="black" />
-                                        <path d="M4 2H1V22H4V2Z" fill="black" />
+                                ><svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 3H19H21V5V7H19V5H5V19H19V17H21V19V21H19H5H3V19V5V3H5ZM21 11H19V9H17V7H15V9H17V11H7V13L17 13V15H15V17H17V15H19V13L21 13V11Z" fill="black" />
                                     </svg>
                                     Logout
                                 </button>
@@ -48,9 +48,8 @@ export default function Navbar() {
                             <Link
                                 href="/auth?mode=signin"
                                 className="py-2 px-6 bg-red-200 flex items-center gap-4 font-lexend hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] text-2xl border-2 transition duration-300"
-                            ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M23 2H20V22H23V2Z" fill="black" />
-                                    <path d="M8 4H10V5H11V6H12V7H13V8H14V9H15V10H16V11H17V13H16V14H15V15H14V16H13V17H12V18H11V19H10V20H8V19H7V17H8V16H9V15H10V14H1V10H10V9H9V8H8V7H7V5H8V4Z" fill="black" />
+                            ><svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M5 3H3V5V7H5V5H19V19H5V17H3V19V21H5H19H21V19V5V3H19H5ZM17 11H15V9H13V7H11V9H13V11H3V13L13 13V15H11V17H13V15H15V13L17 13V11Z" fill="black" />
                                 </svg>
                                 Log In
                             </Link>
@@ -89,9 +88,8 @@ export default function Navbar() {
                                 <button
                                     onClick={() => signOut({ callbackUrl: '/' })}
                                     className="w-full text-left py-2 px-6 flex items-center gap-4 bg-red-200 font-lexend hover:bg-red-100 text-2xl border-2 transition duration-300"
-                                ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M14 5V4H16V5H17V6H18V7H19V8H20V9H21V10H22V11H23V13H22V14H21V15H20V16H19V17H18V18H17V19H16V20H14V19H13V17H14V16H15V15H16V14H7V10H16V9H15V8H14V7H13V5H14Z" fill="black" />
-                                        <path d="M4 2H1V22H4V2Z" fill="black" />
+                                ><svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 3H19H21V5V7H19V5H5V19H19V17H21V19V21H19H5H3V19V5V3H5ZM21 11H19V9H17V7H15V9H17V11H7V13L17 13V15H15V17H17V15H19V13L21 13V11Z" fill="black" />
                                     </svg>
                                     Logout
                                 </button>
@@ -100,7 +98,9 @@ export default function Navbar() {
                             <Link
                                 href="/auth?mode=signin"
                                 className="py-2 px-6 flex items-center gap-4 bg-red-200 font-lexend hover:bg-red-100 text-2xl border-2 transition duration-300"
-                            >
+                            ><svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M5 3H3V5V7H5V5H19V19H5V17H3V19V21H5H19H21V19V5V3H19H5ZM17 11H15V9H13V7H11V9H13V11H3V13L13 13V15H11V17H13V15H15V13L17 13V11Z" fill="black" />
+                                </svg>
                                 Login
                             </Link>
                         )}

@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 export async function POST(req: Request) {
     const data = await req.formData();
@@ -19,4 +21,46 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.redirect(new URL(`/share/${slug}?submitted=true`, req.url));
+}
+
+export async function DELETE(req: Request) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) {
+        return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const messageId = searchParams.get('id');
+
+    if (!messageId) {
+        return new NextResponse('Message ID is required', { status: 400 });
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+    });
+
+    if (!user) {
+        return new NextResponse('User not found', { status: 404 });
+    }
+
+    const message = await prisma.message.findUnique({
+        where: { id: messageId },
+        include: { person: true },
+    });
+
+    if (!message) {
+        return new NextResponse('Message not found', { status: 404 });
+    }
+
+    // Check if the user owns the person associated with the message
+    if (message.person.userId !== user.id) {
+        return new NextResponse('Forbidden', { status: 403 });
+    }
+
+    await prisma.message.delete({
+        where: { id: messageId },
+    });
+
+    return NextResponse.json({ success: true });
 }
