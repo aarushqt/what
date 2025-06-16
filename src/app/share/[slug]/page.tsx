@@ -11,11 +11,13 @@ async function submitMessage(formData: FormData) {
     const slug = formData.get('slug') as string;
     const content = formData.get('content') as string;
     const emoji = formData.get('emoji') as string;
+    const expectedResponse = formData.get('expectedResponse') as string;
 
     await prisma.message.create({
         data: {
             content,
             emoji,
+            expectedResponse: expectedResponse || null,
             person: { connect: { slug } }
         }
     });

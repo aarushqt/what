@@ -11,6 +11,7 @@ interface Message {
     emoji: string;
     done: boolean;
     createdAt: string;
+    expectedResponse?: string;
 }
 
 interface Person {
@@ -286,10 +287,23 @@ export default function DashboardClient({ }: { user: User }) {
                                                             <div className="border-2 p-3 bg-red-100">
                                                                 <div className="flex items-center">
                                                                     <span className="text-3xl">{msg.emoji}</span>
-                                                                    <span className="text-gray-800 ml-2">{msg.content}</span>
+                                                                    <span className="ml-2 text-lg">{msg.content}</span>
                                                                 </div>
-                                                                <div className="text-right text-xs text-gray-500 mt-3">
-                                                                    {formatDistanceToNow(new Date(msg.createdAt), { addSuffix: true })}
+                                                                <div className='flex flex-row-reverse justify-between items-end'>
+                                                                    <div className="text-right text-xs text-gray-500 mt-3">
+                                                                        {formatDistanceToNow(new Date(msg.createdAt), { addSuffix: true })}
+                                                                    </div>
+                                                                    {msg.expectedResponse && (
+                                                                        <div className="mt-4 font-lexend flex items-center gap-3 bg-neutral-100 p-2 border-l-4 border-emerald-400">
+                                                                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2H14V6H10V2ZM7 7H17V9H15V16V22H13V16H11V22H9V16V9H7V7ZM5 5V7H7V5H5ZM5 5H3V3H5V5ZM19 5V7H17V5H19ZM19 5V3H21V5H19Z" fill="black" />
+                                                                            </svg>
+                                                                            <div>
+                                                                                <p className="text-md font-medium text-gray-700">Expected Response:</p>
+                                                                                <p className="text-lg">{msg.expectedResponse}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -319,7 +333,7 @@ export default function DashboardClient({ }: { user: User }) {
                                         <div className="mt-6 border-t pt-4">
                                             <button
                                                 onClick={() => toggleDoneSection(person.slug)}
-                                                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-lexend"
+                                                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-lexend hover:cursor-pointer"
                                             >
                                                 <svg width="24" height="24" className={`transform transition-transform ${isDoneSectionExpanded ? 'rotate-90' : ''}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path fillRule="evenodd" clipRule="evenodd" d="M8 5L8 7L10 7L10 5L8 5ZM12 9L12 7L10 7L10 9L12 9ZM14 11L14 9L12 9L12 11L14 11ZM14 13L16 13L16 11L14 11L14 13ZM12 15L12 13L14 13L14 15L12 15ZM12 15L10 15L10 17L12 17L12 15ZM8 19L8 17L10 17L10 19L8 19Z" fill="black" />
@@ -339,6 +353,12 @@ export default function DashboardClient({ }: { user: User }) {
                                                                     <span className="text-3xl">{msg.emoji}</span>
                                                                     <span className="text-gray-600 line-through">{msg.content}</span>
                                                                 </div>
+                                                                {msg.expectedResponse && (
+                                                                    <div className="mt-2 bg-white p-2 border-l-4 border-gray-300">
+                                                                        <p className="text-sm font-medium text-gray-500">Expected Response:</p>
+                                                                        <p className="text-gray-500 line-through">{msg.expectedResponse}</p>
+                                                                    </div>
+                                                                )}
                                                                 <div className="text-right text-xs text-gray-500 mt-2">
                                                                     Marked as resolved · {format(new Date(msg.createdAt), 'MMM d, yyyy HH:mm')}
                                                                 </div>

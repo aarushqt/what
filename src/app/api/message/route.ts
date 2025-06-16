@@ -7,8 +7,15 @@ export async function POST(req: Request) {
     const data = await req.formData();
     const content = data.get('content') as string;
     const emoji = data.get('emoji') as string;
-    const expectedResponse = data.get('expectedResponse') as string;
+    const expectedResponse = data.get('expectedResponse') as string || null;
     const slug = data.get('slug') as string;
+
+    if (!content || !emoji || !slug) {
+        return NextResponse.json(
+            { error: 'Missing required fields' },
+            { status: 400 }
+        );
+    }
 
     const person = await prisma.person.findUnique({ where: { slug } });
     if (!person) return NextResponse.json({ error: 'Invalid link' }, { status: 400 });
@@ -17,7 +24,7 @@ export async function POST(req: Request) {
         data: {
             content,
             emoji,
-            expectedResponse,
+            expectedResponse: expectedResponse || null,
             personId: person.id
         }
     });

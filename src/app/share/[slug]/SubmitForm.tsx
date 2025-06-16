@@ -76,11 +76,10 @@ export default function SubmitForm({ slug, submitMessage }: SubmitFormProps) {
                 <select
                     name="expectedResponse"
                     className="border-t-2 p-3 w-full"
-                    required
                     disabled={isSubmitting}
                     defaultValue=""
                 >
-                    <option value="" disabled>Select an option</option>
+                    <option value="">Select an option (optional)</option>
                     {expectedResponses.map((response) => (
                         <option key={response} value={response}>
                             {response}
