@@ -38,6 +38,7 @@ export default function DashboardClient({ }: { user: User }) {
     const [isDeletingPerson, setIsDeletingPerson] = useState(false);
     const [isMarkingMessageDone, setIsMarkingMessageDone] = useState(false);
     const [expandedDoneSections, setExpandedDoneSections] = useState<Record<string, boolean>>({});
+    const [copiedLinkSlug, setCopiedLinkSlug] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchPersons = async () => {
@@ -167,6 +168,20 @@ export default function DashboardClient({ }: { user: User }) {
         }));
     };
 
+    const handleCopyLink = async (slug: string) => {
+        const link = `${process.env.NEXT_PUBLIC_BASE_URL}/share/${slug}`;
+        try {
+            await navigator.clipboard.writeText(link);
+            setCopiedLinkSlug(slug);
+            setTimeout(() => {
+                setCopiedLinkSlug(null);
+            }, 3000);
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+            // Optionally, show an error message to the user
+        }
+    };
+
     if (loading) return <div className="min-h-screen w-full flex items-center justify-center">
         <Image
             src="/heart.svg"
@@ -209,9 +224,18 @@ export default function DashboardClient({ }: { user: User }) {
                                     <div className="mb-3 flex justify-between items-start">
                                         <div>
                                             <p className="text-3xl font-semibold text-gray-800 font-playfair">{person.name}</p>
-                                            <p className="text-gray-700 text-sm mt-1">
+                                            <p className="text-gray-700 font-lexend text-md mt-2">
                                                 Complaint link:{' '}
-                                                <code className="bg-gray-100 px-2 py-1">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
+                                                <button
+                                                    onClick={() => handleCopyLink(person.slug)}
+                                                    className="bg-gray-100 px-2 hover:bg-gray-200 transition-colors text-md rounded"
+                                                >
+                                                    {copiedLinkSlug === person.slug ? (
+                                                        <span className="text-green-600">Copied to clipboard!</span>
+                                                    ) : (
+                                                        <code className="font-mono">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
+                                                    )}
+                                                </button>
                                             </p>
                                         </div>
                                         <button
@@ -227,7 +251,7 @@ export default function DashboardClient({ }: { user: User }) {
                                     <div className="mt-4">
                                         <h4 className="text-xl font-lexend font-medium text-gray-700 mb-4">This is how deep in the water you are:</h4>
                                         {activeMessages.length === 0 ? (
-                                            <p className="text-gray-500 text-sm">Damn it&apos;s so peaceful here!</p>
+                                            <p className="text-gray-500 text-sm">t&apos;s so peaceful here. For now!</p>
                                         ) : (
                                             <ul className="space-y-2">
                                                 {activeMessages.map((msg) => (
