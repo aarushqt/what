@@ -51,7 +51,7 @@ export default function SubmitForm({ slug, submitMessage }: SubmitFormProps) {
                             required
                             disabled={isSubmitting}
                         />
-                        <span className="text-3xl inline-block p-2 rounded-full peer-checked:border-2 peer-checked:border-black">{emoji}</span>
+                        <span className="text-3xl inline-block p-2 rounded-full peer-checked:border-2 peer-checked:border-black peer-checked:bg-red-200">{emoji}</span>
                     </label>
                 ))}
             </div>

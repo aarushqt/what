@@ -95,14 +95,14 @@ const HeroSection = () => {
                         alt={`Icon for ${item.title}`}
                         fill
                         className="object-contain"
-                        sizes="(max-width: 640px) 80px, (max-width: 768px) 96px, 112px"
+                        sizes="(max-width: 640px) 120px, (max-width: 768px) 180px, 200px"
                       />
                     </div>
 
                     <h3 className="text-xl sm:text-2xl md:text-3xl font-playfair font-bold text-gray-800 mb-1 sm:mb-2 text-center break-words">
                       {item.title}
                     </h3>
-                    <p className="text-sm sm:text-base text-gray-700 text-center px-2 break-words">
+                    <p className="text-sm sm:text-base font-lexend text-gray-700 text-center px-2 break-words">
                       {item.content}
                     </p>
                   </div>
@@ -160,7 +160,17 @@ export default function Home() {
   }, [session, router]);
 
   if (status === 'loading') {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center">
+        <Image
+          src="/heart.svg"
+          width={100}
+          height={100}
+          alt="Heart Logo"
+          className="animate-heartbeat"
+        />
+      </div>
+    );
   }
 
   return (

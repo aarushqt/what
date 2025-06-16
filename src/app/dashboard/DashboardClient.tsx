@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import { formatDistanceToNow, format } from 'date-fns';
+import Image from 'next/image';
 
 interface Message {
     id: string;
@@ -166,7 +167,15 @@ export default function DashboardClient({ }: { user: User }) {
         }));
     };
 
-    if (loading) return <div className="p-4">Loading...</div>;
+    if (loading) return <div className="min-h-screen w-full flex items-center justify-center">
+        <Image
+            src="/heart.svg"
+            width={100}
+            height={100}
+            alt="Heart Logo"
+            className="animate-heartbeat"
+        />
+    </div>;
 
     return (
         <div>
