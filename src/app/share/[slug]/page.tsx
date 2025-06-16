@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import Navbar from '@/components/Navbar';
 import SubmitForm from './SubmitForm';
+import PastMessages from './PastMessages';
 
 async function submitMessage(formData: FormData) {
     'use server';
@@ -23,6 +24,26 @@ async function submitMessage(formData: FormData) {
     redirect(`/share/${slug}?success=true`);
 }
 
+type PersonWithUserAndMessages = {
+    id: string;
+    name: string;
+    slug: string;
+    userId: string;
+    createdAt: Date;
+    user: {
+        id: string;
+        name: string;
+        email: string;
+    } | null;
+    messages: Array<{
+        id: string;
+        content: string;
+        emoji: string;
+        createdAt: Date;
+        done: boolean;
+    }>;
+}
+
 type PageProps = {
     params: Promise<{ slug: string }>;
     searchParams?: Promise<{ success?: string }>;
@@ -34,8 +55,15 @@ export default async function SharePage({ params, searchParams }: PageProps) {
 
     const person = await prisma.person.findUnique({
         where: { slug },
-        include: { user: true },
-    });
+        include: {
+            user: true,
+            messages: {
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            }
+        },
+    }) as PersonWithUserAndMessages | null;
 
     if (!person) return notFound();
 
@@ -47,7 +75,7 @@ export default async function SharePage({ params, searchParams }: PageProps) {
             <div className="flex-1 flex flex-col items-center justify-center p-6 mt-20">
                 <h1 className="text-5xl font-bold font-playfair mb-4">Hello, {person.name} 👋</h1>
                 <p className="text-gray-700 mb-6 text-2xl">
-                    Leave a message for <span className="font-semibold text-3xl">{person.user.name || person.user.email}</span>
+                    Leave a message for <span className="font-semibold text-3xl">{person.user?.name || 'Partner'}</span>
                 </p>
 
                 {success ? (
@@ -59,6 +87,12 @@ export default async function SharePage({ params, searchParams }: PageProps) {
                     </div>
                 ) : (
                     <SubmitForm slug={slug} submitMessage={submitMessage} />
+                )}
+
+                {person.messages.length > 0 && (
+                    <div className="w-full max-w-md mt-12">
+                        <PastMessages messages={person.messages} />
+                    </div>
                 )}
             </div>
         </>
