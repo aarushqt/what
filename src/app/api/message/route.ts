@@ -7,6 +7,7 @@ export async function POST(req: Request) {
     const data = await req.formData();
     const content = data.get('content') as string;
     const emoji = data.get('emoji') as string;
+    const expectedResponse = data.get('expectedResponse') as string;
     const slug = data.get('slug') as string;
 
     const person = await prisma.person.findUnique({ where: { slug } });
@@ -16,6 +17,7 @@ export async function POST(req: Request) {
         data: {
             content,
             emoji,
+            expectedResponse,
             personId: person.id
         }
     });

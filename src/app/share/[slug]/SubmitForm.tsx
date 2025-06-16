@@ -10,6 +10,19 @@ interface SubmitFormProps {
 export default function SubmitForm({ slug, submitMessage }: SubmitFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const expectedResponses = [
+        "Just say sorry and mean it",
+        "Buy me food. That solves 80% of problems.",
+        "Give me uninterrupted attention for 30 minutes",
+        "Send a long paragraph explaining yourself",
+        "Call me, no texts. Be emotional.",
+        "Admit fault without any “but…”",
+        "Plan something nice for us – I’m not doing the work",
+        "Surprise me (pleasantly, not emotionally)",
+        "Compliment me until I smile (minimum 3 required)",
+        "Promise to not repeat this. Pinky swear."
+    ];
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsSubmitting(true);
@@ -28,7 +41,7 @@ export default function SubmitForm({ slug, submitMessage }: SubmitFormProps) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-4 w-full max-w-md"
+            className="flex flex-col gap-4 w-full max-w-md font-lexend"
         >
             <input type="hidden" name="slug" value={slug} />
 
@@ -39,21 +52,41 @@ export default function SubmitForm({ slug, submitMessage }: SubmitFormProps) {
                 className="border-2 p-3 resize-none h-32"
                 disabled={isSubmitting}
             />
-            <p className='text-center font-bold text-xl'>How are you feeling?</p>
-            <div className="flex gap-2 justify-between">
-                {['😊', '😔', '😡', '😰', '🥱'].map((emoji) => (
-                    <label key={emoji} className="cursor-pointer group">
-                        <input
-                            type="radio"
-                            name="emoji"
-                            value={emoji}
-                            className="hidden peer"
-                            required
-                            disabled={isSubmitting}
-                        />
-                        <span className="text-3xl inline-block p-2 rounded-full peer-checked:border-2 peer-checked:border-black peer-checked:bg-red-200">{emoji}</span>
-                    </label>
-                ))}
+            <div className='border-2'>
+                <p className='text-center font-medium text-2xl py-4 border-b-2'>How are you feeling?</p>
+                <div className="flex gap-2 justify-between p-4">
+                    {['😊', '😔', '😡', '😰', '🥱'].map((emoji) => (
+                        <label key={emoji} className="cursor-pointer group">
+                            <input
+                                type="radio"
+                                name="emoji"
+                                value={emoji}
+                                className="hidden peer"
+                                required
+                                disabled={isSubmitting}
+                            />
+                            <span className="text-3xl inline-block p-2 rounded-full peer-checked:outline-2 peer-checked:outline-black peer-checked:bg-red-200 transition-all duration-100">{emoji}</span>
+                        </label>
+                    ))}
+                </div>
+            </div>
+
+            <div className='border-2'>
+                <p className='text-center font-medium text-2xl py-4'>Expected Response</p>
+                <select
+                    name="expectedResponse"
+                    className="border-t-2 p-3 w-full"
+                    required
+                    disabled={isSubmitting}
+                    defaultValue=""
+                >
+                    <option value="" disabled>Select an option</option>
+                    {expectedResponses.map((response) => (
+                        <option key={response} value={response}>
+                            {response}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <button
