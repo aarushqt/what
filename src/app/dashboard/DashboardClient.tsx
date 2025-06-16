@@ -170,15 +170,36 @@ export default function DashboardClient({ }: { user: User }) {
 
     const handleCopyLink = async (slug: string) => {
         const link = `${process.env.NEXT_PUBLIC_BASE_URL}/share/${slug}`;
+
         try {
-            await navigator.clipboard.writeText(link);
-            setCopiedLinkSlug(slug);
-            setTimeout(() => {
-                setCopiedLinkSlug(null);
-            }, 3000);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(link);
+                setCopiedLinkSlug(slug);
+                setTimeout(() => setCopiedLinkSlug(null), 3000);
+                return;
+            }
+
+            const textArea = document.createElement('textarea');
+            textArea.value = link;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            if (successful) {
+                setCopiedLinkSlug(slug);
+                setTimeout(() => setCopiedLinkSlug(null), 3000);
+            } else {
+                alert(`Please copy this link manually: ${link}`);
+            }
         } catch (err) {
             console.error('Failed to copy: ', err);
-            // Optionally, show an error message to the user
+            alert(`Please copy this link manually: ${link}`);
         }
     };
 
@@ -233,7 +254,7 @@ export default function DashboardClient({ }: { user: User }) {
                                                     {copiedLinkSlug === person.slug ? (
                                                         <span className="text-green-600">Copied to clipboard!</span>
                                                     ) : (
-                                                        <code className="font-mono">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
+                                                        <code className="text-left font-mono">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
                                                     )}
                                                 </button>
                                             </p>
