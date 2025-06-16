@@ -177,11 +177,12 @@ export default function DashboardClient({ }: { user: User }) {
                     <h2 className="text-4xl font-playfair text-red-400 font-semibold">Your Girlfriend</h2>
                     <button
                         onClick={() => setShowModal(true)}
-                        className="bg-red-200 flex hover:cursor-pointer items-center gap-4 py-3 px-10 border-2 border-black text-black font-lexend text-2xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
-                    ><svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        className="bg-red-200 flex hover:cursor-pointer items-center gap-4 py-3 px-4 sm:px-10 border-2 border-black text-black font-lexend text-2xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
+                    >
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" clipRule="evenodd" d="M18 2H12V3.99995H10.0002V9.99995H12.0002V4H18V2ZM18 10H12V12H18V10ZM18.0002 3.99995H20.0002V9.99995H18.0002V3.99995ZM7 15.9999H9V14H21V16H9V20H21.0002V15.9999H23.0002V21.9999H23V22H7V21.9999V20V15.9999ZM3 8H5V10H7V12H5V14H3V12H1V10H3V8Z" fill="black" />
                         </svg>
-                        Add girlfriend
+                        <span className="hidden sm:inline">Add girlfriend</span>
                     </button>
                 </div>
 
@@ -201,7 +202,7 @@ export default function DashboardClient({ }: { user: User }) {
                                             <p className="text-3xl font-semibold text-gray-800 font-playfair">{person.name}</p>
                                             <p className="text-gray-700 text-sm mt-1">
                                                 Complaint link:{' '}
-                                                <code className="bg-gray-100 px-2 py-1 rounded">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
+                                                <code className="bg-gray-100 px-2 py-1">{`${process.env.NEXT_PUBLIC_BASE_URL}/share/${person.slug}`}</code>
                                             </p>
                                         </div>
                                         <button
