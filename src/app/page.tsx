@@ -14,20 +14,20 @@ const HeroSection = () => {
     {
       id: 1,
       title: "Have your boyfriend sign up",
-      content: "using email and password",
-      image: "/Comments.svg"
+      content: "baddies don't have time to remember any email or password, so they will just use the link shared by him",
+      image: "/contact-plus.svg"
     },
     {
       id: 2,
-      title: "Create Link",
-      content: "he will add you as his girlfriend and share a link with you",
-      image: "/Comments.svg"
+      title: "Submitting Complaints",
+      content: "pour your heart out, you can submit as many complaints as you want with your current mood, and he will get notified",
+      image: "/mail-arrow-right.svg"
     },
     {
       id: 3,
-      title: "File a Complaint",
-      content: "Now you can file a complaint for him using the link as many times as you want",
-      image: "/Comments.svg"
+      title: "Immediate Resolution",
+      content: "he will get notified immediately and can resolve your complaints in real-time, no more waiting",
+      image: "/teach.svg"
     },
   ];
 
