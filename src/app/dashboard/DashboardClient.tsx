@@ -204,6 +204,26 @@ export default function DashboardClient({ }: { user: User }) {
         }
     };
 
+    const emojiOptions = [
+        { value: 'crying', file: 'crying.svg', alt: 'Crying face' },
+        { value: 'dead', file: 'dead.svg', alt: 'Dead face' },
+        { value: 'frown', file: 'frown.svg', alt: 'Frown face' },
+        { value: 'happy-open', file: 'happy-open.svg', alt: 'Happy face' },
+        { value: 'love-eyes', file: 'love-eyes.svg', alt: 'Love eyes face' },
+        { value: 'puppy-face', file: 'puppy-face.svg', alt: 'Puppy face' },
+        { value: 'sad', file: 'sad.svg', alt: 'Sad face' },
+        { value: 'satisfied', file: 'satisfied.svg', alt: 'Satisfied face' },
+        { value: 'smile', file: 'smile.svg', alt: 'Smile face' },
+        { value: 'surprised', file: 'surprised.svg', alt: 'Surprised face' },
+        { value: 'wailing', file: 'wailing.svg', alt: 'Wailing face' },
+        { value: 'wink', file: 'wink.svg', alt: 'Wink face' },
+    ];
+
+    const getEmojiFile = (emojiValue: string): string => {
+        return emojiOptions.find(emoji => emoji.value === emojiValue)?.file || 'smile.svg';
+    };
+
+
     if (loading) return <div className="min-h-screen w-full flex items-center justify-center">
         <Image
             src="/heart.svg"
@@ -286,8 +306,17 @@ export default function DashboardClient({ }: { user: User }) {
                                                         <div className="flex-grow w-full sm:w-auto mt-3 sm:mt-0">
                                                             <div className="border-2 p-3 bg-red-100">
                                                                 <div className="flex items-center">
-                                                                    <span className="text-3xl">{msg.emoji}</span>
-                                                                    <span className="ml-2 text-lg">{msg.content}</span>
+                                                                    {msg.emoji && (
+                                                                        <div className="w-20 h-14 relative">
+                                                                            <Image
+                                                                                src={`/emoticons/${getEmojiFile(msg.emoji)}`}
+                                                                                alt={`${msg.emoji}`}
+                                                                                fill
+                                                                                className="object-contain"
+                                                                            />
+                                                                        </div>
+                                                                    )}
+                                                                    <span className="ml-6 text-lg">{msg.content}</span>
                                                                 </div>
                                                                 <div className='flex flex-row-reverse justify-between items-end'>
                                                                     <div className="text-right text-xs text-gray-500 mt-3">
@@ -296,7 +325,7 @@ export default function DashboardClient({ }: { user: User }) {
                                                                     {msg.expectedResponse && (
                                                                         <div className="mt-4 font-lexend flex items-center gap-3 bg-neutral-100 p-2 border-l-4 border-emerald-400">
                                                                             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2H14V6H10V2ZM7 7H17V9H15V16V22H13V16H11V22H9V16V9H7V7ZM5 5V7H7V5H5ZM5 5H3V3H5V5ZM19 5V7H17V5H19ZM19 5V3H21V5H19Z" fill="black" />
+                                                                                <path fillRule="evenodd" clipRule="evenodd" d="M10 2H14V6H10V2ZM7 7H17V9H15V16V22H13V16H11V22H9V16V9H7V7ZM5 5V7H7V5H5ZM5 5H3V3H5V5ZM19 5V7H17V5H19ZM19 5V3H21V5H19Z" fill="black" />
                                                                             </svg>
                                                                             <div>
                                                                                 <p className="text-md font-medium text-gray-700">Expected Response:</p>
