@@ -35,7 +35,15 @@ function AuthContent() {
     }, [mode]);
 
     if (status === 'loading') {
-        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+        return <div className="min-h-screen w-full flex items-center justify-center">
+            <Image
+                src="/heart.svg"
+                width={100}
+                height={100}
+                alt="Heart Logo"
+                className="animate-heartbeat"
+            />
+        </div>;
     }
 
     const toggleMenu = () => {
@@ -123,7 +131,7 @@ function AuthContent() {
     };
 
     const PasswordResetInfoBox = () => (
-        <div className="mt-8 p-3 bg-blue-50 border border-blue-200 flex items-start">
+        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 flex items-start">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_354_3517)">
                     <path d="M22 9V7H21V5H20V4H19V3H17V2H15V1H9V2H7V3H5V4H4V5H3V7H2V9H1V15H2V17H3V19H4V20H5V21H7V22H9V23H15V22H17V21H19V20H20V19H21V17H22V15H23V9H22ZM11 6H13V8H11V6ZM10 15H11V10H10V9H13V15H14V17H10V15Z" fill="#2B7FFF" />
@@ -204,7 +212,7 @@ function AuthContent() {
             </nav >
 
             <main className="flex justify-center items-start">
-                <div className="w-full px-4 sm:px-6 md:w-3/4 lg:w-1/2 xl:w-2/5 max-w-md mx-auto bg-white mt-8 sm:mt-28">
+                <div className="w-full px-4 sm:px-6 md:w-3/4 lg:w-1/2 xl:w-2/5 max-w-md mx-auto bg-white mt-8 sm:mt-28 font-lexend">
                     <div className="mb-6">
                         <h1 className="text-4xl sm:text-6xl font-bold text-red-400 text-center font-playfair">
                             {isSignIn ? 'Sign In' : 'Sign Up'}
@@ -231,28 +239,44 @@ function AuthContent() {
                                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                                         Email
                                     </label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
-                                        required
-                                    />
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M4 4H6H18H20V14V16H8V14L8 8H10H16V10V14H18V6H6V18H20V20H6H4V4ZM14 14V10H10V14H14Z" fill="black" />
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            value={formData.email}
+                                            placeholder='loverboy@handsome.org'
+                                            onChange={handleInputChange}
+                                            className="w-full pl-12 px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
+                                            required
+                                        />
+                                    </div>
                                 </div>
 
                                 <div>
                                     <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                                         Password
                                     </label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        value={formData.password}
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
-                                        required
-                                    />
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M0 7H2V9H0V7ZM4 11H2V9H4V11ZM8 13V11H4V13H2V15H4V13H8ZM16 13H8V15H6V17H8V15H16V17H18V15H16V13ZM20 11H16V13H20V15H22V13H20V11ZM22 9V11H20V9H22ZM22 9V7H24V9H22Z" fill="black" />
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            value={formData.password}
+                                            placeholder='Your secret password'
+                                            onChange={handleInputChange}
+                                            className="w-full pl-12 px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
+                                            required
+                                        />
+                                    </div>
                                 </div>
 
                                 <button
@@ -273,7 +297,6 @@ function AuthContent() {
                                 </button>
                             </form>
 
-                            <PasswordResetInfoBox />
                         </>
                     ) : (
                         <>
@@ -283,56 +306,88 @@ function AuthContent() {
                                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                                         Name
                                     </label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        value={formData.name}
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
-                                        required
-                                    />
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M15 2H9V3.99994H7.00024V9.99994H9.00024V4H15V2ZM15 10H9V12H15V10ZM15.0002 3.99994H17.0002V9.99994H15.0002V3.99994ZM4 15.9999H6V14H18V16H6V20H18.0002V15.9999H20.0002V21.9999H20V22H4V21.9999V20V15.9999Z" fill="black" />
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            value={formData.name}
+                                            placeholder='LoverBoy McHandsome'
+                                            onChange={handleInputChange}
+                                            className="w-full pl-12 px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
+                                            required
+                                        />
+                                    </div>
                                 </div>
 
                                 <div>
                                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                                         Email
                                     </label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
-                                        required
-                                    />
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M4 4H6H18H20V14V16H8V14L8 8H10H16V10V14H18V6H6V18H20V20H6H4V4ZM14 14V10H10V14H14Z" fill="black" />
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            placeholder='loverboy@handsome.org'
+                                            className="w-full pl-12 px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
+                                            required
+                                        />
+                                    </div>
                                 </div>
 
                                 <div>
                                     <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                                         Password
                                     </label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        value={formData.password}
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
-                                        required
-                                    />
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M0 7H2V9H0V7ZM4 11H2V9H4V11ZM8 13V11H4V13H2V15H4V13H8ZM16 13H8V15H6V17H8V15H16V17H18V15H16V13ZM20 11H16V13H20V15H22V13H20V11ZM22 9V11H20V9H22ZM22 9V7H24V9H22Z" fill="black" />
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            value={formData.password}
+                                            onChange={handleInputChange}
+                                            placeholder='Your secret password'
+                                            className="w-full pl-12 px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
+                                            required
+                                        />
+                                    </div>
                                 </div>
 
                                 <div>
                                     <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
                                         Confirm Password
                                     </label>
-                                    <input
-                                        type="password"
-                                        id="confirmPassword"
-                                        value={formData.confirmPassword}
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
-                                        required
-                                    />
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M8 6H16V8H8V6ZM4 10V8H8V10H4ZM2 12V10H4V12H2ZM2 14V12H0V14H2ZM4 16H2V14H4V16ZM8 18H4V16H8V18ZM16 18V20H8V18H16ZM20 16V18H16V16H20ZM22 14V16H20V14H22ZM22 12H24V14H22V12ZM20 10H22V12H20V10ZM20 10V8H16V10H20ZM10 11H14V15H10V11Z" fill="black" />
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="password"
+                                            id="confirmPassword"
+                                            value={formData.confirmPassword}
+                                            onChange={handleInputChange}
+                                            placeholder='Do not forget it'
+                                            className="w-full pl-12 px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
+                                            required
+                                        />
+                                    </div>
                                 </div>
                                 <PasswordResetInfoBox />
 
