@@ -1,10 +1,9 @@
+import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "./prisma";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
-export const authOptions = {
-    adapter: PrismaAdapter(prisma),
+export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -24,12 +23,36 @@ export const authOptions = {
                 const valid = await bcrypt.compare(credentials.password, user.password);
                 if (!valid) return null;
 
-                return user;
+                return {
+                    id: user.id,
+                    username: user.username,
+                    name: user.name
+                };
             }
         })
     ],
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.username = user.username;
+                token.name = user.name;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (token && session.user) {
+                session.user.id = token.id;
+                session.user.username = token.username;
+                session.user.name = token.name;
+            }
+            return session;
+        }
+    },
     session: {
         strategy: "jwt" as const
     },
     secret: process.env.NEXTAUTH_SECRET
 };
+
+export default authOptions;

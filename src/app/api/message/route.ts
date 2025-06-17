@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth/next';
+import { Session } from 'next-auth';
+import authOptions from '@/lib/auth';
 
 export async function POST(req: Request) {
     const data = await req.formData();
@@ -33,8 +34,9 @@ export async function POST(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const session = await getServerSession(authOptions) as Session | null;
+
+    if (!session?.user?.username) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
@@ -46,7 +48,7 @@ export async function PATCH(req: Request) {
     }
 
     const user = await prisma.user.findUnique({
-        where: { email: session.user.email },
+        where: { username: session.user.username },
     });
 
     if (!user) {
@@ -66,7 +68,6 @@ export async function PATCH(req: Request) {
         return new NextResponse('Forbidden', { status: 403 });
     }
 
-    // Update the message to mark it as done
     const updatedMessage = await prisma.message.update({
         where: { id: messageId },
         data: { done: true },
@@ -76,8 +77,9 @@ export async function PATCH(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const session = await getServerSession(authOptions) as Session | null;
+
+    if (!session?.user?.username) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
@@ -89,7 +91,7 @@ export async function DELETE(req: Request) {
     }
 
     const user = await prisma.user.findUnique({
-        where: { email: session.user.email },
+        where: { username: session.user.username },
     });
 
     if (!user) {

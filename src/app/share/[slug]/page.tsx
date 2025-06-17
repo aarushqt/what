@@ -35,7 +35,7 @@ type PersonWithUserAndMessages = {
     user: {
         id: string;
         name: string;
-        email: string;
+        username: string;
     } | null;
     messages: Array<{
         id: string;
