@@ -1,13 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const HeroSection = () => {
+
+const HeroSection = ({ session }: { session: Session | null }) => {
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const carouselItems = [
@@ -73,15 +75,26 @@ const HeroSection = () => {
           />
 
           <div className="sm:mt-auto pt-4 sm:pt-8">
-            <Link href="/auth?mode=signup" className="inline-block">
-              <button className="bg-red-200 flex items-center gap-2 sm:gap-4 font-lexend text-xl sm:text-2xl mb-6 sm:mb-10 font-medium py-2 px-4 sm:py-3 sm:px-6 border-2 transition duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[15px_15px_0px_0px_rgba(0,0,0)]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M23 2H20V22H23V2Z" fill="black" />
-                  <path d="M8 4H10V5H11V6H12V7H13V8H14V9H15V10H16V11H17V13H16V14H15V15H14V16H13V17H12V18H11V19H10V20H8V19H7V17H8V16H9V15H10V14H1V10H10V9H9V8H8V7H7V5H8V4Z" fill="black" />
-                </svg>
-                Sign Up
-              </button>
-            </Link>
+            {session ? (
+              <Link href="/dashboard" className="inline-block">
+                <button className="bg-red-200 flex items-center gap-2 sm:gap-4 font-lexend text-xl sm:text-2xl mb-6 sm:mb-10 font-medium py-2 px-4 sm:py-3 sm:px-6 border-2 transition duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[15px_15px_0px_0px_rgba(0,0,0)]">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M2 5H22V19H2V5ZM4 7V9H20V7H4ZM20 11H4V13H20V11ZM20 15H4V17H20V15Z" fill="black" />
+                  </svg>
+                  Go to your Dashboard
+                </button>
+              </Link>
+            ) : (
+              <Link href="/auth?mode=signup" className="inline-block">
+                <button className="bg-red-200 flex items-center gap-2 sm:gap-4 font-lexend text-xl sm:text-2xl mb-6 sm:mb-10 font-medium py-2 px-4 sm:py-3 sm:px-6 border-2 transition duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[15px_15px_0px_0px_rgba(0,0,0)]">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23 2H20V22H23V2Z" fill="black" />
+                    <path d="M8 4H10V5H11V6H12V7H13V8H14V9H15V10H16V11H17V13H16V14H15V15H14V16H13V17H12V18H11V19H10V20H8V19H7V17H8V16H9V15H10V14H1V10H10V9H9V8H8V7H7V5H8V4Z" fill="black" />
+                  </svg>
+                  Sign Up
+                </button>
+              </Link>
+            )}
           </div>
         </div>
 
@@ -159,13 +172,6 @@ const HeroSection = () => {
 
 export default function Home() {
   const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (session) {
-      router.push('/dashboard');
-    }
-  }, [session, router]);
 
   if (status === 'loading') {
     return (
@@ -185,7 +191,7 @@ export default function Home() {
     <div>
       <Navbar />
       <main className="flex-grow flex flex-col items-center justify-center align-middle px-4 py-auto">
-        <HeroSection />
+        <HeroSection session={session} />
       </main>
     </div>
   );
