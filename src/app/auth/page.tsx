@@ -242,15 +242,23 @@ function AuthContent() {
                                     <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
                                         Username
                                     </label>
-                                    <input
-                                        type="text"
-                                        id="username"
-                                        value={formData.username}
-                                        placeholder="Your username"
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
-                                        required
-                                    />
+
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M15 2H9V3.99994H7.00024V9.99994H9.00024V4H15V2ZM15 10H9V12H15V10ZM15.0002 3.99994H17.0002V9.99994H15.0002V3.99994ZM4 15.9999H6V14H18V16H6V20H18.0002V15.9999H20.0002V21.9999H20V22H4V21.9999V20V15.9999Z" fill="black" />
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            id="username"
+                                            value={formData.username}
+                                            placeholder='Your unique username'
+                                            onChange={handleInputChange}
+                                            className="w-full pl-12 px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
+                                            required
+                                        />
+                                    </div>
                                 </div>
 
                                 <div>
