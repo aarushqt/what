@@ -125,7 +125,7 @@ const HeroSection = ({ session }: { session: Session | null }) => {
           <div className="sm:mt-auto pt-4 sm:pt-8">
             {session ? (
               <Link href="/dashboard" className="inline-block">
-                <button className="bg-red-200 flex items-center gap-2 sm:gap-4 font-lexend text-xl sm:text-2xl mb-6 sm:mb-10 font-medium py-2 px-4 sm:py-3 sm:px-6 border-2 transition duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[15px_15px_0px_0px_rgba(0,0,0)]">
+                <button className="bg-red-200 flex items-center gap-2 sm:gap-4 font-lexend text-xl sm:text-2xl mb-2 sm:mb-10 font-medium py-2 px-4 sm:py-3 sm:px-6 border-2 transition duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[15px_15px_0px_0px_rgba(0,0,0)]">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd" d="M2 5H22V19H2V5ZM4 7V9H20V7H4ZM20 11H4V13H20V11ZM20 15H4V17H20V15Z" fill="black" />
                   </svg>
@@ -134,7 +134,7 @@ const HeroSection = ({ session }: { session: Session | null }) => {
               </Link>
             ) : (
               <Link href="/auth?mode=signup" className="inline-block">
-                <button className="bg-red-200 flex items-center gap-2 sm:gap-4 font-lexend text-xl sm:text-2xl mb-6 sm:mb-10 font-medium py-2 px-4 sm:py-3 sm:px-6 border-2 transition duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[15px_15px_0px_0px_rgba(0,0,0)]">
+                <button className="bg-red-200 flex items-center gap-2 sm:gap-4 font-lexend text-xl sm:text-2xl mb-2 sm:mb-10 font-medium py-2 px-4 sm:py-3 sm:px-6 border-2 transition duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[15px_15px_0px_0px_rgba(0,0,0)]">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M23 2H20V22H23V2Z" fill="black" />
                     <path d="M8 4H10V5H11V6H12V7H13V8H14V9H15V10H16V11H17V13H16V14H15V15H14V16H13V17H12V18H11V19H10V20H8V19H7V17H8V16H9V15H10V14H1V10H10V9H9V8H8V7H7V5H8V4Z" fill="black" />
@@ -212,7 +212,7 @@ const HeroSection = ({ session }: { session: Session | null }) => {
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors duration-300 ${index === currentSlide ? 'bg-red-400' : 'bg-gray-300'
+                className={`w-2 h-2 sm:w-4 sm:h-4 rounded-full transition-colors duration-300 ${index === currentSlide ? 'bg-black' : 'border-2 border-black bg-white'
                   }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
