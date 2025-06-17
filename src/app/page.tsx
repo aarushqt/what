@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, TouchEvent, useCallback } from 'react';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import Navbar from '@/components/Navbar';
@@ -11,6 +11,13 @@ import Link from 'next/link';
 const HeroSection = ({ session }: { session: Session | null }) => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const minSwipeDistance = 50;
+  const autoSlideInterval = 5000;
 
   const carouselItems = [
     {
@@ -33,28 +40,69 @@ const HeroSection = ({ session }: { session: Session | null }) => {
     },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide(prev => (prev === carouselItems.length - 1 ? 0 : prev + 1));
-    }, 5000);
+  const startAutoSlideTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
 
-    return () => clearInterval(interval);
+    timerRef.current = setInterval(() => {
+      setCurrentSlide(prev => (prev === carouselItems.length - 1 ? 0 : prev + 1));
+    }, autoSlideInterval);
   }, [carouselItems.length]);
+
+  useEffect(() => {
+    startAutoSlideTimer();
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [startAutoSlideTimer]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev === carouselItems.length - 1 ? 0 : prev + 1));
+    startAutoSlideTimer();
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? carouselItems.length - 1 : prev - 1));
+    startAutoSlideTimer();
   };
 
   const goToSlide = (index: number): void => {
     setCurrentSlide(index);
+    startAutoSlideTimer();
+  };
+
+  const handleTouchStart = (e: TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
   };
 
   return (
-    <div className="max-w-7xl mx-auto md:py-8 sm:py-4 md:mt-12 mt-16 px-4">
+    <div className="max-w-7xl mx-auto md:py-8 sm:py-4 md:mt-30 mt-16 px-4">
       <div className="flex flex-col md:flex-row items-stretch gap-8">
         <div className="w-full md:w-1/2 flex flex-col justify-between">
           <div>
@@ -100,7 +148,13 @@ const HeroSection = ({ session }: { session: Session | null }) => {
 
         <div className="w-full md:w-1/2 relative">
           <div className="relative overflow-hidden w-full">
-            <div className="relative h-64 sm:h-72 md:h-80 lg:h-[50vh] overflow-hidden w-full">
+            <div
+              ref={carouselRef}
+              className="relative h-64 sm:h-72 md:h-80 lg:h-[50vh] overflow-hidden w-full"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               <div
                 className="flex transition-transform duration-500 ease-in-out h-full w-full"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -134,7 +188,7 @@ const HeroSection = ({ session }: { session: Session | null }) => {
             {/* navigation arrows */}
             <button
               onClick={prevSlide}
-              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 hover:opacity-60 rounded-full p-1 sm:p-2 z-20"
+              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 hover:scale-130 transition duration-75 z-20"
               aria-label="Previous slide"
             >
               <svg className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +197,7 @@ const HeroSection = ({ session }: { session: Session | null }) => {
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 hover:opacity-60 rounded-full p-1 sm:p-2 z-20"
+              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 hover:scale-130 transition duration-75 z-20"
               aria-label="Next slide"
             >
               <svg className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
