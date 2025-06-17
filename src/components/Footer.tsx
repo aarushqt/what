@@ -10,7 +10,7 @@ const Footer = () => {
                                     <path d="M5 2H9V4H7V6H5V2Z" fill="black" />
                                     <path d="M5 12H3V6H5V12Z" fill="black" />
                                     <path d="M7 14H5V12H7V14Z" fill="black" />
-                                    <path fillRule="evenodd" clip-Rule="evenodd" d="M9 16V14H7V16H3V14H1V16H3V18H7V22H9V18H11V16H9ZM9 16V18H7V16H9Z" fill="black" />
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M9 16V14H7V16H3V14H1V16H3V18H7V22H9V18H11V16H9ZM9 16V18H7V16H9Z" fill="black" />
                                     <path d="M15 4V6H9V4H15Z" fill="black" />
                                     <path d="M19 6H17V4H15V2H19V6Z" fill="black" />
                                     <path d="M19 12V6H21V12H19Z" fill="black" />
