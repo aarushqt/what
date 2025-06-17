@@ -378,14 +378,23 @@ export default function DashboardClient({ }: { user: User }) {
                                                             className="flex gap-2 items-center font-lexend"
                                                         >
                                                             <div className="flex-grow border-2 p-3 bg-gray-100 opacity-70">
-                                                                <div className="flex items-center gap-6">
-                                                                    <span className="text-3xl">{msg.emoji}</span>
-                                                                    <span className="text-gray-600 line-through">{msg.content}</span>
+                                                                <div className="flex items-center gap-4">
+                                                                    {msg.emoji && (
+                                                                        <div className="w-12 h-10 relative flex-shrink-0">
+                                                                            <Image
+                                                                                src={`/emoticons/${getEmojiFile(msg.emoji)}`}
+                                                                                alt={`${msg.emoji} emoji`}
+                                                                                fill
+                                                                                className="object-contain opacity-50"
+                                                                            />
+                                                                        </div>
+                                                                    )}
+                                                                    <span className="text-gray-700">{msg.content}</span>
                                                                 </div>
                                                                 {msg.expectedResponse && (
                                                                     <div className="mt-2 bg-white p-2 border-l-4 border-gray-300">
                                                                         <p className="text-sm font-medium text-gray-500">Expected Response:</p>
-                                                                        <p className="text-gray-500 line-through">{msg.expectedResponse}</p>
+                                                                        <p className="text-gray-500">{msg.expectedResponse}</p>
                                                                     </div>
                                                                 )}
                                                                 <div className="text-right text-xs text-gray-500 mt-2">
@@ -491,7 +500,17 @@ export default function DashboardClient({ }: { user: User }) {
                                 Have you resolved this issue? Once marked as done, it will be moved to resolved issues.
                             </p>
                             <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-600">
-                                {messageToMarkDone.emoji} {messageToMarkDone.content}
+                                {messageToMarkDone.emoji && (
+                                    <div className="w-10 h-10 relative flex-shrink-0">
+                                        <Image
+                                            src={`/emoticons/${getEmojiFile(messageToMarkDone.emoji)}`}
+                                            alt={`${messageToMarkDone.emoji} emoji`}
+                                            fill
+                                            className="object-contain"
+                                        />
+                                    </div>
+                                )}
+                                {messageToMarkDone.content}
                             </blockquote>
                             <div className="flex justify-between gap-2 mt-12">
                                 <button
