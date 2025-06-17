@@ -14,7 +14,7 @@ function AuthContent() {
     const { data: session, status } = useSession();
     const [formData, setFormData] = useState({
         name: '',
-        email: '',
+        username: '',
         password: '',
         confirmPassword: ''
     });
@@ -83,7 +83,7 @@ function AuthContent() {
                 },
                 body: JSON.stringify({
                     name: formData.name,
-                    email: formData.email,
+                    username: formData.username,
                     password: formData.password,
                 }),
             });
@@ -95,7 +95,7 @@ function AuthContent() {
             }
 
             setSuccess('Registration successful! You can now sign in.');
-            setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+            setFormData({ name: '', username: '', password: '', confirmPassword: '' });
             setIsSignIn(true);
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred');
@@ -113,15 +113,15 @@ function AuthContent() {
         try {
             const result = await signIn('credentials', {
                 redirect: false,
-                email: formData.email,
+                username: formData.username,
                 password: formData.password,
             });
 
             if (result?.error) {
-                throw new Error(result.error);
+                setError("Something's not right, recheck everything.");
+                return;
             }
 
-            // on successful login
             router.push('/dashboard');
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'Failed to sign in');
@@ -220,7 +220,10 @@ function AuthContent() {
                     </div>
 
                     {error && (
-                        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700">
+                        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 flex items-center gap-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M6 4H20V6H22V8V10V12H14V14H20V16H16V18H14V20H2V18V16V14V12V10V8H4V6H6V4ZM8 10H10V8H8V10Z" fill="#C10007" />
+                            </svg>
                             {error}
                         </div>
                     )}
@@ -236,25 +239,18 @@ function AuthContent() {
                             {/* sign in form */}
                             <form className="space-y-4" onSubmit={handleSignIn}>
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                                        Email
+                                    <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Username
                                     </label>
-                                    <div className="relative">
-                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M4 4H6H18H20V14V16H8V14L8 8H10H16V10V14H18V6H6V18H20V20H6H4V4ZM14 14V10H10V14H14Z" fill="black" />
-                                            </svg>
-                                        </div>
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            value={formData.email}
-                                            placeholder='loverboy@handsome.org'
-                                            onChange={handleInputChange}
-                                            className="w-full pl-12 px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
-                                            required
-                                        />
-                                    </div>
+                                    <input
+                                        type="text"
+                                        id="username"
+                                        value={formData.username}
+                                        placeholder="Your username"
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
+                                        required
+                                    />
                                 </div>
 
                                 <div>
@@ -325,21 +321,21 @@ function AuthContent() {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                                        Email
+                                    <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Username
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M4 4H6H18H20V14V16H8V14L8 8H10H16V10V14H18V6H6V18H20V20H6H4V4ZM14 14V10H10V14H14Z" fill="black" />
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M15 2H9V3.99994H7.00024V9.99994H9.00024V4H15V2ZM15 10H9V12H15V10ZM15.0002 3.99994H17.0002V9.99994H15.0002V3.99994ZM4 15.9999H6V14H18V16H6V20H18.0002V15.9999H20.0002V21.9999H20V22H4V21.9999V20V15.9999Z" fill="black" />
                                             </svg>
                                         </div>
                                         <input
-                                            type="email"
-                                            id="email"
-                                            value={formData.email}
+                                            type="text"
+                                            id="username"
+                                            value={formData.username}
+                                            placeholder='Your username'
                                             onChange={handleInputChange}
-                                            placeholder='loverboy@handsome.org'
                                             className="w-full pl-12 px-3 py-2 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-red-200"
                                             required
                                         />

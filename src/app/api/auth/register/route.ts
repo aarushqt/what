@@ -3,13 +3,13 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
 export async function POST(req: Request) {
-    const { email, password, name } = await req.json();
+    const { username, password, name } = await req.json();
 
-    if (!email || !password || !name) {
+    if (!username || !password || !name) {
         return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    const existing = await prisma.user.findUnique({ where: { email } });
+    const existing = await prisma.user.findUnique({ where: { username } });
     if (existing) {
         return NextResponse.json({ error: "User already exists" }, { status: 409 });
     }
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
     await prisma.user.create({
         data: {
-            email,
+            username,
             name,
             password: hashedPassword
         }
