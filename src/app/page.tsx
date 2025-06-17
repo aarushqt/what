@@ -103,7 +103,7 @@ const HeroSection = ({ session }: { session: Session | null }) => {
 
   return (
     <div className="max-w-7xl mx-auto md:py-8 sm:py-4 md:mt-30 mt-16 px-4">
-      <div className="flex flex-col md:flex-row items-stretch gap-8">
+      <div className="flex-col sm:flex-col lg:flex lg:flex-row items-stretch gap-8">
         <div className="w-full md:w-1/2 flex flex-col justify-between">
           <div>
             <h1 className="text-7xl md:text-7xl lg:text-8xl font-bold font-playfair tracking-tight text-gray-900 mb-4 sm:mb-6 md:mb-8">
@@ -146,7 +146,7 @@ const HeroSection = ({ session }: { session: Session | null }) => {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 relative">
+        <div className="w-full md:w-1/2 relative mt-6 sm:mt-0">
           <div className="relative overflow-hidden w-full">
             <div
               ref={carouselRef}
@@ -212,7 +212,7 @@ const HeroSection = ({ session }: { session: Session | null }) => {
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-2 h-2 sm:w-4 sm:h-4 rounded-full transition-colors duration-300 ${index === currentSlide ? 'bg-black' : 'border-2 border-black bg-white'
+                className={`w-4 h-4 rounded-full transition-colors duration-300 ${index === currentSlide ? 'bg-black' : 'border-2 border-black bg-white'
                   }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
