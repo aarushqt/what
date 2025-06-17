@@ -31,3 +31,26 @@
     animation: var(--heartbeat-animation);
   }
 }
+
+body {
+  background-image: url('/hearts-bg.svg');
+  background-position: left 40px bottom 40px;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  /* Base size for mobile devices */
+  background-size: 80%;
+
+  /* Responsive adjustments */
+  @media (min-width: 640px) {
+    background-size: 60%;
+  }
+
+  @media (min-width: 768px) {
+    background-size: 50%;
+  }
+
+  @media (min-width: 1024px) {
+    background-size: 40%;
+  }
+}

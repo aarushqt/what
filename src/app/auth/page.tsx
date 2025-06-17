@@ -150,7 +150,7 @@ function AuthContent() {
 
     return (
         <>
-            <nav className="bg-white border-b-2">
+            <nav className="border-b-2">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-24">
                         <div className="flex items-center">
@@ -212,7 +212,7 @@ function AuthContent() {
             </nav >
 
             <main className="flex justify-center items-start">
-                <div className="w-full px-4 sm:px-6 md:w-3/4 lg:w-1/2 xl:w-2/5 max-w-md mx-auto bg-white mt-8 sm:mt-28 font-lexend">
+                <div className="w-full px-4 sm:px-6 md:w-3/4 lg:w-1/2 xl:w-2/5 max-w-md mx-auto mt-8 sm:mt-28 font-lexend">
                     <div className="mb-6">
                         <h1 className="text-4xl sm:text-6xl font-bold text-red-400 text-center font-playfair">
                             {isSignIn ? 'Sign In' : 'Sign Up'}

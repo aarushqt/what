@@ -301,9 +301,9 @@ export default function DashboardClient({ }: { user: User }) {
                                                 {activeMessages.map((msg) => (
                                                     <li
                                                         key={msg.id}
-                                                        className="font-lexend flex flex-col sm:flex-row sm:items-start gap-x-3 gap-y-2"
+                                                        className="font-lexend flex flex-col md:flex-row sm:items-start gap-x-3 gap-y-2"
                                                     >
-                                                        <div className="flex-grow w-full sm:w-auto mt-3 sm:mt-0">
+                                                        <div className="flex-grow w-full mt-3 sm:mt-0">
                                                             <div className="border-2 p-3 bg-red-100">
                                                                 <div className="flex items-center">
                                                                     {msg.emoji && (
@@ -318,8 +318,8 @@ export default function DashboardClient({ }: { user: User }) {
                                                                     )}
                                                                     <span className="ml-6 text-lg">{msg.content}</span>
                                                                 </div>
-                                                                <div className='flex flex-row-reverse justify-between items-end'>
-                                                                    <div className="text-right text-xs text-gray-500 mt-3">
+                                                                <div className='flex flex-col-reverse md:flex-row-reverse justify-between items-start md:items-end'>
+                                                                    <div className="text-right text-xs text-gray-500 mt-3 self-end">
                                                                         {formatDistanceToNow(new Date(msg.createdAt), { addSuffix: true })}
                                                                     </div>
                                                                     {msg.expectedResponse && (
@@ -339,7 +339,7 @@ export default function DashboardClient({ }: { user: User }) {
 
                                                         <button
                                                             onClick={() => handleMarkMessageDone(msg, person.slug)}
-                                                            className="flex-shrink-0 flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-3 bg-red-200 border-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
+                                                            className="flex-shrink-0 flex items-center justify-center gap-2 w-full md:w-auto px-4 py-3 bg-red-200 border-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
                                                             title="Mark Resolved"
                                                             disabled={isMarkingMessageDone && messageToMarkDone?.id === msg.id}
                                                         >
