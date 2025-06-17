@@ -240,7 +240,7 @@ export default function DashboardClient({ }: { user: User }) {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-4xl font-playfair text-red-400 font-semibold">Your Girlfriend</h2>
+                    <h2 className="text-4xl font-playfair text-red-400 font-semibold">The Baddie:</h2>
                     <button
                         onClick={() => setShowModal(true)}
                         className="bg-red-200 flex hover:cursor-pointer items-center gap-4 py-3 px-4 sm:px-10 border-2 border-black text-black font-lexend text-2xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
