@@ -76,14 +76,20 @@ function AuthContent() {
         setIsLoading(true);
 
         try {
+            const sanitizedUsername = formData.username.trim().replace(/[^\w]/g, '');
+
+            if (!sanitizedUsername) {
+                setError('Username cannot be empty or contain only special characters.');
+            }
+
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name: formData.name,
-                    username: formData.username,
+                    name: formData.name.trim(),
+                    username: sanitizedUsername,
                     password: formData.password,
                 }),
             });
@@ -91,14 +97,14 @@ function AuthContent() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Failed to register');
+                throw new Error(data.error || 'Failed to register.');
             }
 
             setSuccess('Registration successful! You can now sign in.');
             setFormData({ name: '', username: '', password: '', confirmPassword: '' });
             setIsSignIn(true);
         } catch (err: unknown) {
-            setError(err instanceof Error ? err.message : 'An unknown error occurred');
+            setError(err instanceof Error ? err.message : 'An unknown error occurred.');
         } finally {
             setIsLoading(false);
         }
@@ -111,14 +117,20 @@ function AuthContent() {
         setIsLoading(true);
 
         try {
+            const sanitizedUsername = formData.username.trim().replace(/[^\w]/g, '');
+
+            if (!sanitizedUsername) {
+                setError('Username cannot be empty or contain only special characters.');
+            }
+
             const result = await signIn('credentials', {
                 redirect: false,
-                username: formData.username,
+                username: sanitizedUsername,
                 password: formData.password,
             });
 
             if (result?.error) {
-                setError("Something's not right, recheck everything.");
+                setError("Something's not right, please recheck.");
                 return;
             }
 
