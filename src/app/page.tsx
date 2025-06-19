@@ -109,8 +109,8 @@ const HeroSection = ({ session }: { session: Session | null }) => {
             <h1 className="text-7xl md:text-7xl lg:text-8xl font-bold font-playfair tracking-tight text-gray-900 mb-4 sm:mb-6 md:mb-8">
               <span className='text-red-300'>Girlfriend</span> Grievance Portal
             </h1>
-            <p className="text-lg sm:text-xl text-gray-800 font-lexend">
-              Make your boyfriends sign up to get your complaints urgently.
+            <p className="text-lg sm:text-xl text-gray-800 font-lexend max-w-full md:max-w-3/4">
+              Make your boyfriends sign up to get your complaints urgently. No more communication gaps.
             </p>
           </div>
 
