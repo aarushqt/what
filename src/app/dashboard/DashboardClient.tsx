@@ -421,13 +421,22 @@ export default function DashboardClient({ }: { user: User }) {
                 {showModal && (
                     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
                         <div className="bg-white border-2 p-6 space-y-4">
-                            <h2 className="text-3xl font-playfair">What&apos;s her name?</h2>
+                            <div className='flex items-center justify-between mb-8'>
+                                <h2 className="text-3xl font-playfair">What&apos;s her name?</h2>
+                                <Image
+                                    src="/emoticons/love-eyes.svg"
+                                    width={60}
+                                    height={30}
+                                    alt="Heart Logo"
+                                />
+                            </div>
                             <input
                                 type="text"
                                 className="border px-3 py-2 w-96"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="pookie, sweetheart, etc."
+                                maxLength={24}
                             />
                             <div className="flex justify-between items-center mt-12">
                                 <button
@@ -438,8 +447,11 @@ export default function DashboardClient({ }: { user: User }) {
                                 </button>
                                 <button
                                     onClick={handleCreate}
-                                    className="px-4 py-2 flex items-center gap-4 bg-red-200 border-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
-                                    disabled={!name.trim() || isCreatingPerson}
+                                    className={`px-4 py-2 flex items-center gap-4 hover:cursor-pointer bg-red-200 border-2 ${!name.trim() || name.length > 24 || isCreatingPerson
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : 'shadow-[5px_5px_0px_0px_rgba(0,0,0)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)]'
+                                        } font-lexend text-xl font-medium transition duration-200`}
+                                    disabled={!name.trim() || name.length > 24 || isCreatingPerson}
                                 >
                                     {isCreatingPerson ? (
                                         <svg width="24" height="24" className='animate-spin' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

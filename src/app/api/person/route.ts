@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     const user = await prisma.user.findUnique({ where: { username: session.user.username } });
     if (!user) return new NextResponse('User not found', { status: 404 });
 
-    const Slug = name.toLowerCase().replace(/\s+/g, '_') + '-' + nanoid(10);
+    const Slug = name.slice(0, 8).toLowerCase().replace(/\s+/g, '_') + '-' + nanoid(10);
 
     const person = await prisma.person.create({
         data: {
