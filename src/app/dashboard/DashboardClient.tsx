@@ -263,14 +263,19 @@ export default function DashboardClient({ }: { user: User }) {
 
                             return (
                                 <div key={person.slug} className="border-2 p-4">
-                                    <div className="mb-3 flex justify-between items-start">
+                                    <div className="mb-3 flex justify-between items-center">
                                         <div>
-                                            <p className="text-3xl font-semibold text-gray-800 font-playfair">{person.name}</p>
+                                            <div className='flex items-center justify-start gap-3'>
+                                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fillRule="evenodd" clipRule="evenodd" d="M9 2H5V4H3V6H1V12H3V14H5V16H7V18H9V20H11V22H13V20H15V18H17V16H19V14H21V12H23V6H21V4H19V2H15V4H13V6H11V4H9V2ZM9 4V6H11V8H13V6H15V4H19V6H21V12H19V14H17V16H15V18H13V20H11V18H9V16H7V14H5V12H3V6H5V4H9Z" fill="black" />
+                                                </svg>
+                                                <p className="text-3xl font-semibold text-gray-800 font-playfair">{person.name}</p>
+                                            </div>
                                             <p className="text-gray-700 font-lexend text-md mt-2">
                                                 Complaint link:{' '}
                                                 <button
                                                     onClick={() => handleCopyLink(person.slug)}
-                                                    className="bg-gray-100 px-2 hover:bg-gray-200 transition-colors text-md rounded"
+                                                    className="bg-gray-100 px-2 hover:bg-gray-200 hover:cursor-pointer transition-colors text-md rounded"
                                                 >
                                                     {copiedLinkSlug === person.slug ? (
                                                         <span className="text-green-600">Copied to clipboard!</span>
@@ -282,10 +287,10 @@ export default function DashboardClient({ }: { user: User }) {
                                         </div>
                                         <button
                                             onClick={() => handleDelete(person)}
-                                            className='hover:cursor-pointer hover:scale-110 transition-transform duration-200'
+                                            className='hover:cursor-pointer hover:scale-110 transition-transform duration-200 mr-4'
                                         >
-                                            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M5 3H3V21H5H19H21V3H19H5ZM19 5V19H5V5H19ZM16 11H8V13H16V11Z" fill="black" />
+                                            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd" clipRule="evenodd" d="M12 2H18V4H12.0002V9.99995H10.0002V3.99995H12V2ZM12 10H18V12H12V10ZM20.0002 3.99995H18.0002V9.99995H20.0002V3.99995ZM9 15.9999H7V20V21.9999V22H23V21.9999H23.0002V15.9999H21.0002V20H9V16H21V14H9V15.9999ZM7 10H1V12H7V10Z" fill="black" />
                                             </svg>
                                         </button>
                                     </div>
@@ -339,7 +344,7 @@ export default function DashboardClient({ }: { user: User }) {
 
                                                         <button
                                                             onClick={() => handleMarkMessageDone(msg, person.slug)}
-                                                            className="flex-shrink-0 flex items-center justify-center gap-2 w-full md:w-auto px-4 py-3 bg-red-200 border-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
+                                                            className="flex-shrink-0 flex items-center justify-center gap-2 w-full md:w-auto px-4 py-3 bg-red-200 border-2 hover:cursor-pointer shadow-[5px_5px_0px_0px_rgba(0,0,0)] font-lexend text-xl font-medium hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] transition duration-200"
                                                             title="Mark Resolved"
                                                             disabled={isMarkingMessageDone && messageToMarkDone?.id === msg.id}
                                                         >

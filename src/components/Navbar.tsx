@@ -37,7 +37,7 @@ export default function Navbar() {
                                 <p className="text-base sm:text-xl lg:text-2xl">Hey, <span className='font-bold'>{session.user?.name || 'User'}</span></p>
                                 <button
                                     onClick={() => signOut({ callbackUrl: '/' })}
-                                    className="py-1.5 px-4 lg:py-2 lg:px-6 bg-red-200 flex items-center gap-2 lg:gap-4 font-lexend hover:shadow-[5px_5px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] text-base sm:text-xl lg:text-2xl border-2 transition duration-300"
+                                    className="py-1.5 px-4 lg:py-2 lg:px-6 bg-red-200 flex items-center gap-2 hover:cursor-pointer lg:gap-4 font-lexend hover:shadow-[5px_5px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] text-base sm:text-xl lg:text-2xl border-2 transition duration-300"
                                 >
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7">
                                         <path fillRule="evenodd" clipRule="evenodd" d="M5 3H19H21V5V7H19V5H5V19H19V17H21V19V21H19H5H3V19V5V3H5ZM21 11H19V9H17V7H15V9H17V11H7V13L17 13V15H15V17H17V15H19V13L21 13V11Z" fill="black" />
@@ -48,7 +48,7 @@ export default function Navbar() {
                         ) : (
                             <Link
                                 href="/auth?mode=signin"
-                                className="py-1.5 px-4 lg:py-2 lg:px-6 bg-red-200 flex items-center gap-2 lg:gap-4 font-lexend hover:shadow-[5px_5px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] text-base sm:text-xl lg:text-2xl border-2 transition duration-300"
+                                className="py-1.5 px-4 lg:py-2 lg:px-6 bg-red-200 flex items-center gap-2 hover:cursor-pointer lg:gap-4 font-lexend hover:shadow-[5px_5px_0px_0px_rgba(0,0,0)] sm:hover:shadow-[10px_10px_0px_0px_rgba(0,0,0)] text-base sm:text-xl lg:text-2xl border-2 transition duration-300"
                             >
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7">
                                     <path fillRule="evenodd" clipRule="evenodd" d="M5 3H3V5V7H5V5H19V19H5V17H3V19V21H5H19H21V19V5V3H19H5ZM17 11H15V9H13V7H11V9H13V11H3V13L13 13V15H11V17H13V15H15V13L17 13V11Z" fill="black" />
